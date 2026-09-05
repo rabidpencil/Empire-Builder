@@ -1,0 +1,2314 @@
+{
+ "1": [
+  {
+   "city": "Atlanta",
+   "payout": 14,
+   "load": "oats"
+  },
+  {
+   "city": "Monterrey",
+   "payout": 24,
+   "load": "tobacco"
+  },
+  {
+   "city": "Oklahoma City",
+   "payout": 9,
+   "load": "corn"
+  }
+ ],
+ "2": [
+  {
+   "city": "Chicago",
+   "payout": 14,
+   "load": "fish"
+  },
+  {
+   "city": "Montreal",
+   "payout": 39,
+   "load": "textiles"
+  },
+  {
+   "city": "Omaha",
+   "payout": 24,
+   "load": "silver"
+  }
+ ],
+ "3": [
+  {
+   "city": "Kansas City",
+   "payout": 19,
+   "load": "nickel"
+  },
+  {
+   "city": "New Orleans",
+   "payout": 9,
+   "load": "cotton"
+  },
+  {
+   "city": "Phoenix",
+   "payout": 15,
+   "load": "imports"
+  }
+ ],
+ "4": [
+  {
+   "city": "Los Angeles",
+   "payout": 29,
+   "load": "tourists"
+  },
+  {
+   "city": "Philadelphia",
+   "payout": 17,
+   "load": "corn"
+  },
+  {
+   "city": "Pittsburgh",
+   "payout": 6,
+   "load": "machinery"
+  }
+ ],
+ "5": [
+  {
+   "city": "Mexico City",
+   "payout": 15,
+   "load": "cattle"
+  },
+  {
+   "city": "San Francisco",
+   "payout": 42,
+   "load": "tobacco"
+  },
+  {
+   "city": "Portland, ME",
+   "payout": 26,
+   "load": "oats"
+  }
+ ],
+ "6": [
+  {
+   "city": "New York",
+   "payout": 19,
+   "load": "rice"
+  },
+  {
+   "city": "Savannah",
+   "payout": 13,
+   "load": "swine"
+  },
+  {
+   "city": "Portland, OR",
+   "payout": 26,
+   "load": "oats"
+  }
+ ],
+ "7": [
+  {
+   "city": "Seattle",
+   "payout": 40,
+   "load": "steel"
+  },
+  {
+   "city": "Toronto",
+   "payout": 23,
+   "load": "fruit"
+  },
+  {
+   "city": "Raleigh",
+   "payout": 11,
+   "load": "bauxite"
+  }
+ ],
+ "8": [
+  {
+   "city": "Atlanta",
+   "payout": 20,
+   "load": "textiles"
+  },
+  {
+   "city": "Dallas",
+   "payout": 13,
+   "load": "cattle"
+  },
+  {
+   "city": "Regina",
+   "payout": 28,
+   "load": "tobacco"
+  }
+ ],
+ "9": [
+  {
+   "city": "Chicago",
+   "payout": 7,
+   "load": "iron"
+  },
+  {
+   "city": "Denver",
+   "payout": 16,
+   "load": "rice"
+  },
+  {
+   "city": "St. Louis",
+   "payout": 31,
+   "load": "sugar"
+  }
+ ],
+ "10": [
+  {
+   "city": "Kansas City",
+   "payout": 28,
+   "load": "sugar"
+  },
+  {
+   "city": "Detroit",
+   "payout": 21,
+   "load": "sheep"
+  },
+  {
+   "city": "Salt Lake City",
+   "payout": 15,
+   "load": "machinery"
+  }
+ ],
+ "11": [
+  {
+   "city": "Los Angeles",
+   "payout": 12,
+   "load": "fish"
+  },
+  {
+   "city": "Guadalajara",
+   "payout": 24,
+   "load": "copper"
+  },
+  {
+   "city": "San Diego",
+   "payout": 30,
+   "load": "bauxite"
+  }
+ ],
+ "12": [
+  {
+   "city": "Mexico City",
+   "payout": 34,
+   "load": "sugar"
+  },
+  {
+   "city": "Houston",
+   "payout": 20,
+   "load": "imports"
+  },
+  {
+   "city": "Santa Fe",
+   "payout": 12,
+   "load": "fish"
+  }
+ ],
+ "13": [
+  {
+   "city": "New York",
+   "payout": 11,
+   "load": "cotton"
+  },
+  {
+   "city": "Minneapolis",
+   "payout": 23,
+   "load": "fruit"
+  },
+  {
+   "city": "Sudbury",
+   "payout": 35,
+   "load": "copper"
+  }
+ ],
+ "14": [
+  {
+   "city": "Seattle",
+   "payout": 32,
+   "load": "tourists"
+  },
+  {
+   "city": "Monterrey",
+   "payout": 11,
+   "load": "wheat"
+  },
+  {
+   "city": "Tampa",
+   "payout": 21,
+   "load": "cars"
+  }
+ ],
+ "15": [
+  {
+   "city": "Atlanta",
+   "payout": 12,
+   "load": "oil"
+  },
+  {
+   "city": "Montreal",
+   "payout": 27,
+   "load": "uranium"
+  },
+  {
+   "city": "Tampico",
+   "payout": 34,
+   "load": "sugar"
+  }
+ ],
+ "16": [
+  {
+   "city": "Chicago",
+   "payout": 34,
+   "load": "sugar"
+  },
+  {
+   "city": "New Orleans",
+   "payout": 16,
+   "load": "textiles"
+  },
+  {
+   "city": "Torreon",
+   "payout": 20,
+   "load": "lead"
+  }
+ ],
+ "17": [
+  {
+   "city": "Kansas City",
+   "payout": 29,
+   "load": "coffee"
+  },
+  {
+   "city": "San Francisco",
+   "payout": 11,
+   "load": "wood"
+  },
+  {
+   "city": "Vancouver",
+   "payout": 19,
+   "load": "coal"
+  }
+ ],
+ "18": [
+  {
+   "city": "Los Angeles",
+   "payout": 33,
+   "load": "cars"
+  },
+  {
+   "city": "Savannah",
+   "payout": 23,
+   "load": "lead"
+  },
+  {
+   "city": "Veracruz",
+   "payout": 13,
+   "load": "textiles"
+  }
+ ],
+ "19": [
+  {
+   "city": "Mexico City",
+   "payout": 31,
+   "load": "tourists"
+  },
+  {
+   "city": "Toronto",
+   "payout": 13,
+   "load": "tobacco"
+  },
+  {
+   "city": "Washington DC",
+   "payout": 22,
+   "load": "oil"
+  }
+ ],
+ "20": [
+  {
+   "city": "New York",
+   "payout": 12,
+   "load": "coal"
+  },
+  {
+   "city": "Boston",
+   "payout": 20,
+   "load": "bauxite"
+  },
+  {
+   "city": "Winnipeg",
+   "payout": 27,
+   "load": "fruit"
+  }
+ ],
+ "21": [
+  {
+   "city": "Seattle",
+   "payout": 36,
+   "load": "cars"
+  },
+  {
+   "city": "Dallas",
+   "payout": 27,
+   "load": "nickel"
+  },
+  {
+   "city": "Billings",
+   "payout": 14,
+   "load": "swine"
+  }
+ ],
+ "22": [
+  {
+   "city": "Atlanta",
+   "payout": 9,
+   "load": "corn"
+  },
+  {
+   "city": "Denver",
+   "payout": 18,
+   "load": "steel"
+  },
+  {
+   "city": "Buffalo",
+   "payout": 27,
+   "load": "sheep"
+  }
+ ],
+ "23": [
+  {
+   "city": "Chicago",
+   "payout": 35,
+   "load": "coffee"
+  },
+  {
+   "city": "Detroit",
+   "payout": 12,
+   "load": "oats"
+  },
+  {
+   "city": "Boise",
+   "payout": 22,
+   "load": "oil"
+  }
+ ],
+ "24": [
+  {
+   "city": "Kansas City",
+   "payout": 10,
+   "load": "iron"
+  },
+  {
+   "city": "Guadalajara",
+   "payout": 20,
+   "load": "rice"
+  },
+  {
+   "city": "Birmingham",
+   "payout": 27,
+   "load": "copper"
+  }
+ ],
+ "25": [
+  {
+   "city": "Los Angeles",
+   "payout": 13,
+   "load": "coal"
+  },
+  {
+   "city": "Houston",
+   "payout": 19,
+   "load": "cars"
+  },
+  {
+   "city": "Calgary",
+   "payout": 31,
+   "load": "cotton"
+  }
+ ],
+ "26": [
+  {
+   "city": "Mexico City",
+   "payout": 28,
+   "load": "swine"
+  },
+  {
+   "city": "Minneapolis",
+   "payout": 19,
+   "load": "tobacco"
+  },
+  {
+   "city": "Cheyenne",
+   "payout": 12,
+   "load": "iron"
+  }
+ ],
+ "27": [
+  {
+   "city": "New York",
+   "payout": 28,
+   "load": "uranium"
+  },
+  {
+   "city": "Monterrey",
+   "payout": 20,
+   "load": "oats"
+  },
+  {
+   "city": "Cincinnati",
+   "payout": 11,
+   "load": "imports"
+  }
+ ],
+ "28": [
+  {
+   "city": "Seattle",
+   "payout": 36,
+   "load": "cotton"
+  },
+  {
+   "city": "Montreal",
+   "payout": 16,
+   "load": "coal"
+  },
+  {
+   "city": "Culiacan",
+   "payout": 24,
+   "load": "lead"
+  }
+ ],
+ "29": [
+  {
+   "city": "Atlanta",
+   "payout": 28,
+   "load": "copper"
+  },
+  {
+   "city": "New Orleans",
+   "payout": 18,
+   "load": "sheep"
+  },
+  {
+   "city": "Chihuahua",
+   "payout": 13,
+   "load": "rice"
+  }
+ ],
+ "30": [
+  {
+   "city": "Chicago",
+   "payout": 27,
+   "load": "silver"
+  },
+  {
+   "city": "Philadelphia",
+   "payout": 21,
+   "load": "oats"
+  },
+  {
+   "city": "Des Moines",
+   "payout": 10,
+   "load": "bauxite"
+  }
+ ],
+ "31": [
+  {
+   "city": "Kansas City",
+   "payout": 11,
+   "load": "machinery"
+  },
+  {
+   "city": "San Francisco",
+   "payout": 17,
+   "load": "nickel"
+  },
+  {
+   "city": "Duluth",
+   "payout": 27,
+   "load": "textiles"
+  }
+ ],
+ "32": [
+  {
+   "city": "Los Angeles",
+   "payout": 31,
+   "load": "iron"
+  },
+  {
+   "city": "Savannah",
+   "payout": 18,
+   "load": "wheat"
+  },
+  {
+   "city": "Durango",
+   "payout": 11,
+   "load": "machinery"
+  }
+ ],
+ "33": [
+  {
+   "city": "Mexico City",
+   "payout": 32,
+   "load": "tobacco"
+  },
+  {
+   "city": "Toronto",
+   "payout": 23,
+   "load": "rice"
+  },
+  {
+   "city": "Fargo",
+   "payout": 7,
+   "load": "swine"
+  }
+ ],
+ "34": [
+  {
+   "city": "New York",
+   "payout": 27,
+   "load": "lead"
+  },
+  {
+   "city": "Billings",
+   "payout": 21,
+   "load": "cars"
+  },
+  {
+   "city": "Hermosillo",
+   "payout": 35,
+   "load": "nickel"
+  }
+ ],
+ "35": [
+  {
+   "city": "Seattle",
+   "payout": 55,
+   "load": "coffee"
+  },
+  {
+   "city": "Birmingham",
+   "payout": 9,
+   "load": "coal"
+  },
+  {
+   "city": "Jacksonville",
+   "payout": 24,
+   "load": "textiles"
+  }
+ ],
+ "36": [
+  {
+   "city": "Atlanta",
+   "payout": 14,
+   "load": "wheat"
+  },
+  {
+   "city": "Boise",
+   "payout": 31,
+   "load": "cars"
+  },
+  {
+   "city": "Las Vegas",
+   "payout": 42,
+   "load": "tobacco"
+  }
+ ],
+ "37": [
+  {
+   "city": "Chicago",
+   "payout": 16,
+   "load": "uranium"
+  },
+  {
+   "city": "Buffalo",
+   "payout": 24,
+   "load": "lead"
+  },
+  {
+   "city": "Knoxville",
+   "payout": 9,
+   "load": "corn"
+  }
+ ],
+ "38": [
+  {
+   "city": "Kansas City",
+   "payout": 9,
+   "load": "lead"
+  },
+  {
+   "city": "Cheyenne",
+   "payout": 15,
+   "load": "cotton"
+  },
+  {
+   "city": "Juarez",
+   "payout": 28,
+   "load": "wood"
+  }
+ ],
+ "39": [
+  {
+   "city": "Los Angeles",
+   "payout": 38,
+   "load": "tobacco"
+  },
+  {
+   "city": "Calgary",
+   "payout": 13,
+   "load": "nickel"
+  },
+  {
+   "city": "Memphis",
+   "payout": 17,
+   "load": "uranium"
+  }
+ ],
+ "40": [
+  {
+   "city": "Mexico City",
+   "payout": 10,
+   "load": "silver"
+  },
+  {
+   "city": "Cincinnati",
+   "payout": 22,
+   "load": "sheep"
+  },
+  {
+   "city": "Miami",
+   "payout": 38,
+   "load": "copper"
+  }
+ ],
+ "41": [
+  {
+   "city": "New York",
+   "payout": 6,
+   "load": "steel"
+  },
+  {
+   "city": "Chihuahua",
+   "payout": 17,
+   "load": "lead"
+  },
+  {
+   "city": "Norfolk",
+   "payout": 30,
+   "load": "sheep"
+  }
+ ],
+ "42": [
+  {
+   "city": "Seattle",
+   "payout": 24,
+   "load": "wheat"
+  },
+  {
+   "city": "Culiacan",
+   "payout": 19,
+   "load": "coal"
+  },
+  {
+   "city": "Oklahoma City",
+   "payout": 10,
+   "load": "machinery"
+  }
+ ],
+ "43": [
+  {
+   "city": "Atlanta",
+   "payout": 38,
+   "load": "sugar"
+  },
+  {
+   "city": "Des Moines",
+   "payout": 17,
+   "load": "nickel"
+  },
+  {
+   "city": "Omaha",
+   "payout": 7,
+   "load": "cattle"
+  }
+ ],
+ "44": [
+  {
+   "city": "Chicago",
+   "payout": 18,
+   "load": "wood"
+  },
+  {
+   "city": "Duluth",
+   "payout": 11,
+   "load": "cattle"
+  },
+  {
+   "city": "Phoenix",
+   "payout": 29,
+   "load": "nickel"
+  }
+ ],
+ "45": [
+  {
+   "city": "Kansas City",
+   "payout": 19,
+   "load": "fish"
+  },
+  {
+   "city": "Durango",
+   "payout": 28,
+   "load": "tobacco"
+  },
+  {
+   "city": "Pittsburgh",
+   "payout": 13,
+   "load": "iron"
+  }
+ ],
+ "46": [
+  {
+   "city": "Los Angeles",
+   "payout": 22,
+   "load": "oil"
+  },
+  {
+   "city": "Fargo",
+   "payout": 16,
+   "load": "steel"
+  },
+  {
+   "city": "Portland, ME",
+   "payout": 35,
+   "load": "sheep"
+  }
+ ],
+ "47": [
+  {
+   "city": "Mexico City",
+   "payout": 28,
+   "load": "fruit"
+  },
+  {
+   "city": "Jacksonville",
+   "payout": 16,
+   "load": "oil"
+  },
+  {
+   "city": "Portland, OR",
+   "payout": 39,
+   "load": "cars"
+  }
+ ],
+ "48": [
+  {
+   "city": "New York",
+   "payout": 19,
+   "load": "cattle"
+  },
+  {
+   "city": "Hermosillo",
+   "payout": 28,
+   "load": "bauxite"
+  },
+  {
+   "city": "Raleigh",
+   "payout": 12,
+   "load": "wood"
+  }
+ ],
+ "49": [
+  {
+   "city": "Seattle",
+   "payout": 43,
+   "load": "textiles"
+  },
+  {
+   "city": "Juarez",
+   "payout": 10,
+   "load": "wheat"
+  },
+  {
+   "city": "Regina",
+   "payout": 26,
+   "load": "rice"
+  }
+ ],
+ "50": [
+  {
+   "city": "Atlanta",
+   "payout": 9,
+   "load": "imports"
+  },
+  {
+   "city": "Knoxville",
+   "payout": 28,
+   "load": "copper"
+  },
+  {
+   "city": "St. Louis",
+   "payout": 21,
+   "load": "wood"
+  }
+ ],
+ "51": [
+  {
+   "city": "Chicago",
+   "payout": 24,
+   "load": "copper"
+  },
+  {
+   "city": "Las Vegas",
+   "payout": 36,
+   "load": "cars"
+  },
+  {
+   "city": "Salt Lake City",
+   "payout": 14,
+   "load": "fruit"
+  }
+ ],
+ "52": [
+  {
+   "city": "Kansas City",
+   "payout": 14,
+   "load": "sheep"
+  },
+  {
+   "city": "Memphis",
+   "payout": 30,
+   "load": "coffee"
+  },
+  {
+   "city": "San Diego",
+   "payout": 22,
+   "load": "steel"
+  }
+ ],
+ "53": [
+  {
+   "city": "Los Angeles",
+   "payout": 34,
+   "load": "coffee"
+  },
+  {
+   "city": "Miami",
+   "payout": 23,
+   "load": "oats"
+  },
+  {
+   "city": "Santa Fe",
+   "payout": 9,
+   "load": "oil"
+  }
+ ],
+ "54": [
+  {
+   "city": "Mexico City",
+   "payout": 43,
+   "load": "nickel"
+  },
+  {
+   "city": "Norfolk",
+   "payout": 11,
+   "load": "wood"
+  },
+  {
+   "city": "Sudbury",
+   "payout": 25,
+   "load": "lead"
+  }
+ ],
+ "55": [
+  {
+   "city": "New York",
+   "payout": 44,
+   "load": "coffee"
+  },
+  {
+   "city": "Oklahoma City",
+   "payout": 29,
+   "load": "wood"
+  },
+  {
+   "city": "Tampa",
+   "payout": 15,
+   "load": "coal"
+  }
+ ],
+ "56": [
+  {
+   "city": "Seattle",
+   "payout": 21,
+   "load": "machinery"
+  },
+  {
+   "city": "Omaha",
+   "payout": 10,
+   "load": "coal"
+  },
+  {
+   "city": "Torreon",
+   "payout": 34,
+   "load": "wood"
+  }
+ ],
+ "57": [
+  {
+   "city": "Atlanta",
+   "payout": 9,
+   "load": "fish"
+  },
+  {
+   "city": "Phoenix",
+   "payout": 20,
+   "load": "swine"
+  },
+  {
+   "city": "Tampico",
+   "payout": 16,
+   "load": "machinery"
+  }
+ ],
+ "58": [
+  {
+   "city": "Chicago",
+   "payout": 17,
+   "load": "fruit"
+  },
+  {
+   "city": "Pittsburgh",
+   "payout": 32,
+   "load": "copper"
+  },
+  {
+   "city": "Vancouver",
+   "payout": 24,
+   "load": "oats"
+  }
+ ],
+ "59": [
+  {
+   "city": "Kansas City",
+   "payout": 10,
+   "load": "steel"
+  },
+  {
+   "city": "Portland, ME",
+   "payout": 32,
+   "load": "uranium"
+  },
+  {
+   "city": "Veracruz",
+   "payout": 22,
+   "load": "machinery"
+  }
+ ],
+ "60": [
+  {
+   "city": "Los Angeles",
+   "payout": 16,
+   "load": "cattle"
+  },
+  {
+   "city": "Portland, OR",
+   "payout": 22,
+   "load": "uranium"
+  },
+  {
+   "city": "Washington DC",
+   "payout": 29,
+   "load": "sheep"
+  }
+ ],
+ "61": [
+  {
+   "city": "Mexico City",
+   "payout": 28,
+   "load": "oats"
+  },
+  {
+   "city": "Raleigh",
+   "payout": 15,
+   "load": "corn"
+  },
+  {
+   "city": "Winnipeg",
+   "payout": 23,
+   "load": "imports"
+  }
+ ],
+ "62": [
+  {
+   "city": "New York",
+   "payout": 18,
+   "load": "bauxite"
+  },
+  {
+   "city": "Regina",
+   "payout": 25,
+   "load": "imports"
+  },
+  {
+   "city": "Billings",
+   "payout": 39,
+   "load": "coffee"
+  }
+ ],
+ "63": [
+  {
+   "city": "Seattle",
+   "payout": 29,
+   "load": "iron"
+  },
+  {
+   "city": "St. Louis",
+   "payout": 17,
+   "load": "fish"
+  },
+  {
+   "city": "Birmingham",
+   "payout": 22,
+   "load": "silver"
+  }
+ ],
+ "64": [
+  {
+   "city": "Atlanta",
+   "payout": 10,
+   "load": "tourists"
+  },
+  {
+   "city": "Salt Lake City",
+   "payout": 19,
+   "load": "cotton"
+  },
+  {
+   "city": "Boise",
+   "payout": 31,
+   "load": "rice"
+  }
+ ],
+ "65": [
+  {
+   "city": "Chicago",
+   "payout": 13,
+   "load": "tobacco"
+  },
+  {
+   "city": "San Diego",
+   "payout": 20,
+   "load": "cotton"
+  },
+  {
+   "city": "Buffalo",
+   "payout": 25,
+   "load": "uranium"
+  }
+ ],
+ "66": [
+  {
+   "city": "Kansas City",
+   "payout": 19,
+   "load": "imports"
+  },
+  {
+   "city": "Santa Fe",
+   "payout": 25,
+   "load": "tobacco"
+  },
+  {
+   "city": "Calgary",
+   "payout": 15,
+   "load": "wood"
+  }
+ ],
+ "67": [
+  {
+   "city": "Los Angeles",
+   "payout": 28,
+   "load": "swine"
+  },
+  {
+   "city": "Sudbury",
+   "payout": 8,
+   "load": "imports"
+  },
+  {
+   "city": "Cheyenne",
+   "payout": 14,
+   "load": "bauxite"
+  }
+ ],
+ "68": [
+  {
+   "city": "Mexico City",
+   "payout": 34,
+   "load": "cars"
+  },
+  {
+   "city": "Tampa",
+   "payout": 13,
+   "load": "fish"
+  },
+  {
+   "city": "Cincinnati",
+   "payout": 20,
+   "load": "uranium"
+  }
+ ],
+ "69": [
+  {
+   "city": "New York",
+   "payout": 17,
+   "load": "swine"
+  },
+  {
+   "city": "Vancouver",
+   "payout": 29,
+   "load": "corn"
+  },
+  {
+   "city": "Chihuahua",
+   "payout": 23,
+   "load": "tourists"
+  }
+ ],
+ "70": [
+  {
+   "city": "Seattle",
+   "payout": 13,
+   "load": "cattle"
+  },
+  {
+   "city": "Torreon",
+   "payout": 20,
+   "load": "bauxite"
+  },
+  {
+   "city": "Des Moines",
+   "payout": 32,
+   "load": "coffee"
+  }
+ ],
+ "71": [
+  {
+   "city": "Seattle",
+   "payout": 14,
+   "load": "sheep"
+  },
+  {
+   "city": "Tampico",
+   "payout": 21,
+   "load": "bauxite"
+  },
+  {
+   "city": "Fargo",
+   "payout": 26,
+   "load": "textiles"
+  }
+ ],
+ "72": [
+  {
+   "city": "Los Angeles",
+   "payout": 28,
+   "load": "corn"
+  },
+  {
+   "city": "Veracruz",
+   "payout": 14,
+   "load": "cotton"
+  },
+  {
+   "city": "Duluth",
+   "payout": 20,
+   "load": "fish"
+  }
+ ],
+ "73": [
+  {
+   "city": "Mexico City",
+   "payout": 26,
+   "load": "lead"
+  },
+  {
+   "city": "Washington DC",
+   "payout": 21,
+   "load": "wheat"
+  },
+  {
+   "city": "Boise",
+   "payout": 12,
+   "load": "fruit"
+  }
+ ],
+ "74": [
+  {
+   "city": "Boston",
+   "payout": 13,
+   "load": "cotton"
+  },
+  {
+   "city": "Winnipeg",
+   "payout": 19,
+   "load": "oil"
+  },
+  {
+   "city": "Durango",
+   "payout": 24,
+   "load": "oats"
+  }
+ ],
+ "75": [
+  {
+   "city": "Dallas",
+   "payout": 28,
+   "load": "sugar"
+  },
+  {
+   "city": "Billings",
+   "payout": 18,
+   "load": "imports"
+  },
+  {
+   "city": "Hermosillo",
+   "payout": 9,
+   "load": "cattle"
+  }
+ ],
+ "76": [
+  {
+   "city": "Denver",
+   "payout": 15,
+   "load": "iron"
+  },
+  {
+   "city": "Culiacan",
+   "payout": 44,
+   "load": "nickel"
+  },
+  {
+   "city": "Jacksonville",
+   "payout": 23,
+   "load": "lead"
+  }
+ ],
+ "77": [
+  {
+   "city": "Detroit",
+   "payout": 19,
+   "load": "uranium"
+  },
+  {
+   "city": "Birmingham",
+   "payout": 11,
+   "load": "oil"
+  },
+  {
+   "city": "Juarez",
+   "payout": 27,
+   "load": "tobacco"
+  }
+ ],
+ "78": [
+  {
+   "city": "Guadalajara",
+   "payout": 11,
+   "load": "fish"
+  },
+  {
+   "city": "Buffalo",
+   "payout": 18,
+   "load": "wheat"
+  },
+  {
+   "city": "Knoxville",
+   "payout": 39,
+   "load": "sugar"
+  }
+ ],
+ "79": [
+  {
+   "city": "Houston",
+   "payout": 29,
+   "load": "wood"
+  },
+  {
+   "city": "Calgary",
+   "payout": 37,
+   "load": "textiles"
+  },
+  {
+   "city": "Las Vegas",
+   "payout": 18,
+   "load": "cattle"
+  }
+ ],
+ "80": [
+  {
+   "city": "Minneapolis",
+   "payout": 14,
+   "load": "steel"
+  },
+  {
+   "city": "Cheyenne",
+   "payout": 18,
+   "load": "rice"
+  },
+  {
+   "city": "Memphis",
+   "payout": 23,
+   "load": "wood"
+  }
+ ],
+ "81": [
+  {
+   "city": "Montreal",
+   "payout": 32,
+   "load": "sheep"
+  },
+  {
+   "city": "Chihuahua",
+   "payout": 21,
+   "load": "bauxite"
+  },
+  {
+   "city": "Miami",
+   "payout": 10,
+   "load": "cotton"
+  }
+ ],
+ "82": [
+  {
+   "city": "Monterrey",
+   "payout": 16,
+   "load": "coal"
+  },
+  {
+   "city": "Cincinnati",
+   "payout": 29,
+   "load": "silver"
+  },
+  {
+   "city": "Norfolk",
+   "payout": 11,
+   "load": "cars"
+  }
+ ],
+ "83": [
+  {
+   "city": "New Orleans",
+   "payout": 13,
+   "load": "tourists"
+  },
+  {
+   "city": "Culiacan",
+   "payout": 20,
+   "load": "fruit"
+  },
+  {
+   "city": "Oklahoma City",
+   "payout": 26,
+   "load": "sugar"
+  }
+ ],
+ "84": [
+  {
+   "city": "Philadelphia",
+   "payout": 19,
+   "load": "cattle"
+  },
+  {
+   "city": "Des Moines",
+   "payout": 8,
+   "load": "coal"
+  },
+  {
+   "city": "Phoenix",
+   "payout": 31,
+   "load": "tobacco"
+  }
+ ],
+ "85": [
+  {
+   "city": "San Francisco",
+   "payout": 31,
+   "load": "swine"
+  },
+  {
+   "city": "Duluth",
+   "payout": 20,
+   "load": "imports"
+  },
+  {
+   "city": "Pittsburgh",
+   "payout": 12,
+   "load": "corn"
+  }
+ ],
+ "86": [
+  {
+   "city": "Savannah",
+   "payout": 11,
+   "load": "coal"
+  },
+  {
+   "city": "Durango",
+   "payout": 16,
+   "load": "copper"
+  },
+  {
+   "city": "Omaha",
+   "payout": 32,
+   "load": "coffee"
+  }
+ ],
+ "87": [
+  {
+   "city": "Toronto",
+   "payout": 15,
+   "load": "swine"
+  },
+  {
+   "city": "Fargo",
+   "payout": 25,
+   "load": "fruit"
+  },
+  {
+   "city": "Portland, ME",
+   "payout": 29,
+   "load": "oil"
+  }
+ ],
+ "88": [
+  {
+   "city": "Boston",
+   "payout": 27,
+   "load": "oil"
+  },
+  {
+   "city": "Hermosillo",
+   "payout": 18,
+   "load": "wheat"
+  },
+  {
+   "city": "Portland, OR",
+   "payout": 12,
+   "load": "fruit"
+  }
+ ],
+ "89": [
+  {
+   "city": "Dallas",
+   "payout": 13,
+   "load": "tourists"
+  },
+  {
+   "city": "Jacksonville",
+   "payout": 19,
+   "load": "cars"
+  },
+  {
+   "city": "Regina",
+   "payout": 33,
+   "load": "silver"
+  }
+ ],
+ "90": [
+  {
+   "city": "Denver",
+   "payout": 30,
+   "load": "coffee"
+  },
+  {
+   "city": "Juarez",
+   "payout": 19,
+   "load": "bauxite"
+  },
+  {
+   "city": "Raleigh",
+   "payout": 10,
+   "load": "coal"
+  }
+ ],
+ "91": [
+  {
+   "city": "Detroit",
+   "payout": 27,
+   "load": "copper"
+  },
+  {
+   "city": "Knoxville",
+   "payout": 19,
+   "load": "lead"
+  },
+  {
+   "city": "Salt Lake City",
+   "payout": 12,
+   "load": "uranium"
+  }
+ ],
+ "92": [
+  {
+   "city": "Guadalajara",
+   "payout": 19,
+   "load": "machinery"
+  },
+  {
+   "city": "Houston",
+   "payout": 11,
+   "load": "sheep"
+  },
+  {
+   "city": "St. Louis",
+   "payout": 21,
+   "load": "copper"
+  }
+ ],
+ "93": [
+  {
+   "city": "Houston",
+   "payout": 13,
+   "load": "corn"
+  },
+  {
+   "city": "Miami",
+   "payout": 23,
+   "load": "wheat"
+  },
+  {
+   "city": "San Diego",
+   "payout": 30,
+   "load": "tourists"
+  }
+ ],
+ "94": [
+  {
+   "city": "Minneapolis",
+   "payout": 14,
+   "load": "nickel"
+  },
+  {
+   "city": "Memphis",
+   "payout": 18,
+   "load": "textiles"
+  },
+  {
+   "city": "Santa Fe",
+   "payout": 27,
+   "load": "coffee"
+  }
+ ],
+ "95": [
+  {
+   "city": "Monterrey",
+   "payout": 8,
+   "load": "rice"
+  },
+  {
+   "city": "Norfolk",
+   "payout": 22,
+   "load": "oats"
+  },
+  {
+   "city": "Sudbury",
+   "payout": 13,
+   "load": "fish"
+  }
+ ],
+ "96": [
+  {
+   "city": "Montreal",
+   "payout": 21,
+   "load": "iron"
+  },
+  {
+   "city": "Oklahoma City",
+   "payout": 16,
+   "load": "silver"
+  },
+  {
+   "city": "Tampa",
+   "payout": 44,
+   "load": "sugar"
+  }
+ ],
+ "97": [
+  {
+   "city": "New Orleans",
+   "payout": 25,
+   "load": "copper"
+  },
+  {
+   "city": "Omaha",
+   "payout": 13,
+   "load": "machinery"
+  },
+  {
+   "city": "Tampico",
+   "payout": 39,
+   "load": "nickel"
+  }
+ ],
+ "98": [
+  {
+   "city": "Philadelphia",
+   "payout": 14,
+   "load": "iron"
+  },
+  {
+   "city": "Phoenix",
+   "payout": 26,
+   "load": "cars"
+  },
+  {
+   "city": "Torreon",
+   "payout": 20,
+   "load": "fruit"
+  }
+ ],
+ "99": [
+  {
+   "city": "San Francisco",
+   "payout": 38,
+   "load": "cars"
+  },
+  {
+   "city": "Pittsburgh",
+   "payout": 13,
+   "load": "nickel"
+  },
+  {
+   "city": "Vancouver",
+   "payout": 19,
+   "load": "uranium"
+  }
+ ],
+ "100": [
+  {
+   "city": "Savannah",
+   "payout": 13,
+   "load": "corn"
+  },
+  {
+   "city": "Portland, ME",
+   "payout": 23,
+   "load": "rice"
+  },
+  {
+   "city": "Veracruz",
+   "payout": 32,
+   "load": "swine"
+  }
+ ],
+ "101": [
+  {
+   "city": "Toronto",
+   "payout": 20,
+   "load": "wheat"
+  },
+  {
+   "city": "Portland, OR",
+   "payout": 12,
+   "load": "imports"
+  },
+  {
+   "city": "Washington DC",
+   "payout": 8,
+   "load": "cotton"
+  }
+ ],
+ "102": [
+  {
+   "city": "Boston",
+   "payout": 9,
+   "load": "steel"
+  },
+  {
+   "city": "Raleigh",
+   "payout": 20,
+   "load": "oats"
+  },
+  {
+   "city": "Winnipeg",
+   "payout": 30,
+   "load": "textiles"
+  }
+ ],
+ "103": [
+  {
+   "city": "Dallas",
+   "payout": 8,
+   "load": "steel"
+  },
+  {
+   "city": "Regina",
+   "payout": 15,
+   "load": "swine"
+  },
+  {
+   "city": "Billings",
+   "payout": 24,
+   "load": "rice"
+  }
+ ],
+ "104": [
+  {
+   "city": "Denver",
+   "payout": 15,
+   "load": "tourists"
+  },
+  {
+   "city": "St. Louis",
+   "payout": 24,
+   "load": "silver"
+  },
+  {
+   "city": "Boise",
+   "payout": 34,
+   "load": "steel"
+  }
+ ],
+ "105": [
+  {
+   "city": "Detroit",
+   "payout": 12,
+   "load": "bauxite"
+  },
+  {
+   "city": "Salt Lake City",
+   "payout": 21,
+   "load": "tourists"
+  },
+  {
+   "city": "Buffalo",
+   "payout": 36,
+   "load": "silver"
+  }
+ ],
+ "106": [
+  {
+   "city": "Guadalajara",
+   "payout": 15,
+   "load": "cattle"
+  },
+  {
+   "city": "San Diego",
+   "payout": 24,
+   "load": "rice"
+  },
+  {
+   "city": "Calgary",
+   "payout": 32,
+   "load": "steel"
+  }
+ ],
+ "107": [
+  {
+   "city": "Houston",
+   "payout": 29,
+   "load": "sugar"
+  },
+  {
+   "city": "Santa Fe",
+   "payout": 7,
+   "load": "machinery"
+  },
+  {
+   "city": "Cheyenne",
+   "payout": 17,
+   "load": "steel"
+  }
+ ],
+ "108": [
+  {
+   "city": "Minneapolis",
+   "payout": 20,
+   "load": "fish"
+  },
+  {
+   "city": "Sudbury",
+   "payout": 13,
+   "load": "iron"
+  },
+  {
+   "city": "Chihuahua",
+   "payout": 29,
+   "load": "wood"
+  }
+ ],
+ "109": [
+  {
+   "city": "Monterrey",
+   "payout": 28,
+   "load": "sugar"
+  },
+  {
+   "city": "Tampa",
+   "payout": 18,
+   "load": "oil"
+  },
+  {
+   "city": "Des Moines",
+   "payout": 12,
+   "load": "lead"
+  }
+ ],
+ "110": [
+  {
+   "city": "Montreal",
+   "payout": 17,
+   "load": "cotton"
+  },
+  {
+   "city": "Tampico",
+   "payout": 24,
+   "load": "swine"
+  },
+  {
+   "city": "Duluth",
+   "payout": 39,
+   "load": "coffee"
+  }
+ ],
+ "111": [
+  {
+   "city": "New Orleans",
+   "payout": 25,
+   "load": "nickel"
+  },
+  {
+   "city": "Vancouver",
+   "payout": 46,
+   "load": "tobacco"
+  },
+  {
+   "city": "Culiacan",
+   "payout": 12,
+   "load": "steel"
+  }
+ ],
+ "112": [
+  {
+   "city": "Philadelphia",
+   "payout": 22,
+   "load": "wheat"
+  },
+  {
+   "city": "Fargo",
+   "payout": 15,
+   "load": "oil"
+  },
+  {
+   "city": "Durango",
+   "payout": 27,
+   "load": "tourists"
+  }
+ ],
+ "113": [
+  {
+   "city": "San Francisco",
+   "payout": 14,
+   "load": "coal"
+  },
+  {
+   "city": "Veracruz",
+   "payout": 27,
+   "load": "uranium"
+  },
+  {
+   "city": "Hermosillo",
+   "payout": 24,
+   "load": "oats"
+  }
+ ],
+ "114": [
+  {
+   "city": "Savannah",
+   "payout": 39,
+   "load": "coffee"
+  },
+  {
+   "city": "Winnipeg",
+   "payout": 17,
+   "load": "machinery"
+  },
+  {
+   "city": "Torreon",
+   "payout": 11,
+   "load": "rice"
+  }
+ ],
+ "115": [
+  {
+   "city": "Toronto",
+   "payout": 10,
+   "load": "steel"
+  },
+  {
+   "city": "Billings",
+   "payout": 18,
+   "load": "fruit"
+  },
+  {
+   "city": "Juarez",
+   "payout": 32,
+   "load": "nickel"
+  }
+ ],
+ "116": [
+  {
+   "city": "Boston",
+   "payout": 22,
+   "load": "cattle"
+  },
+  {
+   "city": "Boise",
+   "payout": 17,
+   "load": "machinery"
+  },
+  {
+   "city": "Knoxville",
+   "payout": 27,
+   "load": "silver"
+  }
+ ],
+ "117": [
+  {
+   "city": "Dallas",
+   "payout": 11,
+   "load": "corn"
+  },
+  {
+   "city": "Birmingham",
+   "payout": 18,
+   "load": "lead"
+  },
+  {
+   "city": "Las Vegas",
+   "payout": 39,
+   "load": "coffee"
+  }
+ ],
+ "118": [
+  {
+   "city": "Miami",
+   "payout": 28,
+   "load": "textiles"
+  },
+  {
+   "city": "Washington DC",
+   "payout": 16,
+   "load": "swine"
+  },
+  {
+   "city": "Denver",
+   "payout": 23,
+   "load": "tobacco"
+  }
+ ],
+ "119": [
+  {
+   "city": "Detroit",
+   "payout": 37,
+   "load": "sugar"
+  },
+  {
+   "city": "Omaha",
+   "payout": 22,
+   "load": "fish"
+  },
+  {
+   "city": "Norfolk",
+   "payout": 13,
+   "load": "fruit"
+  }
+ ],
+ "120": [
+  {
+   "city": "Guadalajara",
+   "payout": 11,
+   "load": "cotton"
+  },
+  {
+   "city": "Calgary",
+   "payout": 18,
+   "load": "iron"
+  },
+  {
+   "city": "Oklahoma City",
+   "payout": 23,
+   "load": "imports"
+  }
+ ],
+ "121": [
+  {
+   "city": "Houston",
+   "payout": 11,
+   "load": "iron"
+  },
+  {
+   "city": "Cheyenne",
+   "payout": 22,
+   "load": "sugar"
+  },
+  {
+   "city": "Buffalo",
+   "payout": 34,
+   "load": "copper"
+  }
+ ],
+ "122": [
+  {
+   "city": "Minneapolis",
+   "payout": 12,
+   "load": "lead"
+  },
+  {
+   "city": "Chihuahua",
+   "payout": 21,
+   "load": "oats"
+  },
+  {
+   "city": "Portland, ME",
+   "payout": 37,
+   "load": "textiles"
+  }
+ ],
+ "123": [
+  {
+   "city": "Monterrey",
+   "payout": 18,
+   "load": "iron"
+  },
+  {
+   "city": "Cincinnati",
+   "payout": 28,
+   "load": "copper"
+  },
+  {
+   "city": "Phoenix",
+   "payout": 23,
+   "load": "tourists"
+  }
+ ],
+ "124": [
+  {
+   "city": "New Orleans",
+   "payout": 11,
+   "load": "wheat"
+  },
+  {
+   "city": "Culiacan",
+   "payout": 28,
+   "load": "bauxite"
+  },
+  {
+   "city": "Portland, OR",
+   "payout": 35,
+   "load": "tourists"
+  }
+ ],
+ "125": [
+  {
+   "city": "New Orleans",
+   "payout": 23,
+   "load": "wood"
+  },
+  {
+   "city": "Des Moines",
+   "payout": 18,
+   "load": "imports"
+  },
+  {
+   "city": "Raleigh",
+   "payout": 48,
+   "load": "sugar"
+  }
+ ],
+ "126": [
+  {
+   "city": "Philadelphia",
+   "payout": 28,
+   "load": "uranium"
+  },
+  {
+   "city": "Duluth",
+   "payout": 14,
+   "load": "sheep"
+  },
+  {
+   "city": "Salt Lake City",
+   "payout": 21,
+   "load": "bauxite"
+  }
+ ],
+ "127": [
+  {
+   "city": "San Francisco",
+   "payout": 29,
+   "load": "rice"
+  },
+  {
+   "city": "Veracruz",
+   "payout": 10,
+   "load": "corn"
+  },
+  {
+   "city": "Regina",
+   "payout": 18,
+   "load": "nickel"
+  }
+ ],
+ "128": [
+  {
+   "city": "Savannah",
+   "payout": 10,
+   "load": "cattle"
+  },
+  {
+   "city": "Fargo",
+   "payout": 22,
+   "load": "fish"
+  },
+  {
+   "city": "Durango",
+   "payout": 30,
+   "load": "cars"
+  }
+ ],
+ "129": [
+  {
+   "city": "Toronto",
+   "payout": 33,
+   "load": "textiles"
+  },
+  {
+   "city": "Hermosillo",
+   "payout": 12,
+   "load": "coal"
+  },
+  {
+   "city": "Winnipeg",
+   "payout": 22,
+   "load": "fish"
+  }
+ ],
+ "130": [
+  {
+   "city": "Boston",
+   "payout": 33,
+   "load": "sheep"
+  },
+  {
+   "city": "Jacksonville",
+   "payout": 25,
+   "load": "nickel"
+  },
+  {
+   "city": "Juarez",
+   "payout": 13,
+   "load": "fruit"
+  }
+ ],
+ "131": [
+  {
+   "city": "Dallas",
+   "payout": 30,
+   "load": "wood"
+  },
+  {
+   "city": "Sudbury",
+   "payout": 16,
+   "load": "wheat"
+  },
+  {
+   "city": "Tampa",
+   "payout": 20,
+   "load": "oats"
+  }
+ ],
+ "132": [
+  {
+   "city": "Denver",
+   "payout": 12,
+   "load": "swine"
+  },
+  {
+   "city": "Knoxville",
+   "payout": 23,
+   "load": "textiles"
+  },
+  {
+   "city": "Tampico",
+   "payout": 29,
+   "load": "cars"
+  }
+ ],
+ "133": [
+  {
+   "city": "Detroit",
+   "payout": 8,
+   "load": "corn"
+  },
+  {
+   "city": "Las Vegas",
+   "payout": 27,
+   "load": "silver"
+  },
+  {
+   "city": "Torreon",
+   "payout": 21,
+   "load": "iron"
+  }
+ ],
+ "134": [
+  {
+   "city": "Guadalajara",
+   "payout": 11,
+   "load": "imports"
+  },
+  {
+   "city": "Memphis",
+   "payout": 20,
+   "load": "sheep"
+  },
+  {
+   "city": "Vancouver",
+   "payout": 39,
+   "load": "cotton"
+  }
+ ],
+ "135": [
+  {
+   "city": "Las Vegas",
+   "payout": 32,
+   "load": "tourists"
+  },
+  {
+   "city": "Miami",
+   "payout": 28,
+   "load": "lead"
+  },
+  {
+   "city": "San Diego",
+   "payout": 21,
+   "load": "silver"
+  }
+ ],
+ "136": [
+  {
+   "city": "Minneapolis",
+   "payout": 12,
+   "load": "oil"
+  },
+  {
+   "city": "Norfolk",
+   "payout": 29,
+   "load": "uranium"
+  },
+  {
+   "city": "Jacksonville",
+   "payout": 28,
+   "load": "silver"
+  }
+ ]
+}
