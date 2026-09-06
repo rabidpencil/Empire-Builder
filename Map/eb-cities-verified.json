@@ -1,0 +1,719 @@
+{
+ "frame": "lattice (a,b), Phoenix pinned at (1,16)",
+ "transform_from_scan": {
+  "matrix": [
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    1
+   ]
+  ],
+  "offset": [
+   -16,
+   -6
+  ]
+ },
+ "cities": [
+  {
+   "cell": [
+    -6,
+    -4
+   ],
+   "name": "Vancouver",
+   "type": "small",
+   "loads": [
+    "fish",
+    "nickel"
+   ]
+  },
+  {
+   "cell": [
+    -8,
+    2
+   ],
+   "name": "Portland, OR",
+   "type": "small",
+   "loads": [
+    "copper",
+    "fish",
+    "wood"
+   ]
+  },
+  {
+   "cell": [
+    -1,
+    2
+   ],
+   "name": "Boise",
+   "type": "small",
+   "loads": [
+    "lead"
+   ]
+  },
+  {
+   "cell": [
+    -10,
+    13
+   ],
+   "name": "San Francisco",
+   "type": "medium",
+   "loads": [
+    "sugar",
+    "fruit",
+    "imports"
+   ]
+  },
+  {
+   "cell": [
+    -7,
+    -1
+   ],
+   "name": "Seattle",
+   "type": "major",
+   "loads": []
+  },
+  {
+   "cell": [
+    4,
+    -10
+   ],
+   "name": "Calgary",
+   "type": "small",
+   "loads": [
+    "cattle",
+    "lead"
+   ]
+  },
+  {
+   "cell": [
+    11,
+    -12
+   ],
+   "name": "Regina",
+   "type": "small",
+   "loads": [
+    "cattle",
+    "uranium"
+   ]
+  },
+  {
+   "cell": [
+    8,
+    -4
+   ],
+   "name": "Billings",
+   "type": "small",
+   "loads": [
+    "sheep",
+    "cattle"
+   ]
+  },
+  {
+   "cell": [
+    10,
+    0
+   ],
+   "name": "Cheyenne",
+   "type": "small",
+   "loads": [
+    "cattle"
+   ]
+  },
+  {
+   "cell": [
+    10,
+    2
+   ],
+   "name": "Denver",
+   "type": "medium",
+   "loads": [
+    "lead"
+   ]
+  },
+  {
+   "cell": [
+    2,
+    5
+   ],
+   "name": "Salt Lake City",
+   "type": "small",
+   "loads": [
+    "coal",
+    "sheep"
+   ]
+  },
+  {
+   "cell": [
+    18,
+    -14
+   ],
+   "name": "Winnipeg",
+   "type": "small",
+   "loads": [
+    "oats",
+    "wheet"
+   ]
+  },
+  {
+   "cell": [
+    19,
+    -11
+   ],
+   "name": "Fargo",
+   "type": "small",
+   "loads": [
+    "oats"
+   ]
+  },
+  {
+   "cell": [
+    20,
+    -4
+   ],
+   "name": "Omaha",
+   "type": "small",
+   "loads": [
+    "oats",
+    "wheat"
+   ]
+  },
+  {
+   "cell": [
+    24,
+    -13
+   ],
+   "name": "Duluth",
+   "type": "small",
+   "loads": [
+    "coal",
+    "iron"
+   ]
+  },
+  {
+   "cell": [
+    23,
+    -10
+   ],
+   "name": "Minneapolis",
+   "type": "medium",
+   "loads": [
+    "corn"
+   ]
+  },
+  {
+   "cell": [
+    23,
+    -6
+   ],
+   "name": "Des Moines",
+   "type": "small",
+   "loads": [
+    "corn",
+    "swine"
+   ]
+  },
+  {
+   "cell": [
+    28,
+    -9
+   ],
+   "name": "Chicago",
+   "type": "major",
+   "loads": [
+    "tourists"
+   ]
+  },
+  {
+   "cell": [
+    34,
+    -13
+   ],
+   "name": "Detroit",
+   "type": "medium",
+   "loads": [
+    "cars"
+   ]
+  },
+  {
+   "cell": [
+    38,
+    -18
+   ],
+   "name": "Toronto",
+   "type": "medium",
+   "loads": [
+    "cars",
+    "machinery"
+   ]
+  },
+  {
+   "cell": [
+    35,
+    -20
+   ],
+   "name": "Sudbury",
+   "type": "small",
+   "loads": [
+    "nickel"
+   ]
+  },
+  {
+   "cell": [
+    34,
+    -9
+   ],
+   "name": "Cincinnati",
+   "type": "small",
+   "loads": [
+    "coal",
+    "machinery"
+   ]
+  },
+  {
+   "cell": [
+    43,
+    -25
+   ],
+   "name": "Montreal",
+   "type": "medium",
+   "loads": [
+    "imports"
+   ]
+  },
+  {
+   "cell": [
+    47,
+    -26
+   ],
+   "name": "Portland, ME",
+   "type": "small",
+   "loads": [
+    "wood"
+   ]
+  },
+  {
+   "cell": [
+    47,
+    -23
+   ],
+   "name": "Boston",
+   "type": "medium",
+   "loads": [
+    "fish",
+    "machinery"
+   ]
+  },
+  {
+   "cell": [
+    44,
+    -20
+   ],
+   "name": "New York",
+   "type": "major",
+   "loads": [
+    "tourists"
+   ]
+  },
+  {
+   "cell": [
+    44,
+    -18
+   ],
+   "name": "Philadelphia",
+   "type": "medium",
+   "loads": [
+    "imports"
+   ]
+  },
+  {
+   "cell": [
+    39,
+    -17
+   ],
+   "name": "Buffalo",
+   "type": "small",
+   "loads": [
+    "machinery"
+   ]
+  },
+  {
+   "cell": [
+    39,
+    -14
+   ],
+   "name": "Pittsburgh",
+   "type": "small",
+   "loads": [
+    "steel"
+   ]
+  },
+  {
+   "cell": [
+    42,
+    -15
+   ],
+   "name": "Washington, D.C.",
+   "type": "small",
+   "loads": []
+  },
+  {
+   "cell": [
+    44,
+    -13
+   ],
+   "name": "Norfolk",
+   "type": "small",
+   "loads": [
+    "imports",
+    "fish"
+   ]
+  },
+  {
+   "cell": [
+    41,
+    -10
+   ],
+   "name": "Raleigh",
+   "type": "small",
+   "loads": [
+    "tobacco",
+    "machinery"
+   ]
+  },
+  {
+   "cell": [
+    35,
+    -6
+   ],
+   "name": "Knoxville",
+   "type": "small",
+   "loads": [
+    "machinery"
+   ]
+  },
+  {
+   "cell": [
+    36,
+    -4
+   ],
+   "name": "Atlanta",
+   "type": "major",
+   "loads": []
+  },
+  {
+   "cell": [
+    33,
+    -2
+   ],
+   "name": "Birmingham",
+   "type": "small",
+   "loads": [
+    "iron",
+    "steel"
+   ]
+  },
+  {
+   "cell": [
+    40,
+    -4
+   ],
+   "name": "Savannah",
+   "type": "medium",
+   "loads": [
+    "cotton",
+    "tobacco"
+   ]
+  },
+  {
+   "cell": [
+    40,
+    -2
+   ],
+   "name": "Jacksonville",
+   "type": "small",
+   "loads": [
+    "machinery"
+   ]
+  },
+  {
+   "cell": [
+    39,
+    2
+   ],
+   "name": "Tampa",
+   "type": "small",
+   "loads": [
+    "fruit"
+   ]
+  },
+  {
+   "cell": [
+    43,
+    2
+   ],
+   "name": "Miami",
+   "type": "small",
+   "loads": [
+    "cattle"
+   ]
+  },
+  {
+   "cell": [
+    28,
+    0
+   ],
+   "name": "Memphis",
+   "type": "small",
+   "loads": [
+    "bauxite"
+   ]
+  },
+  {
+   "cell": [
+    27,
+    -4
+   ],
+   "name": "St. Louis",
+   "type": "small",
+   "loads": [
+    "corn",
+    "swine"
+   ]
+  },
+  {
+   "cell": [
+    22,
+    -2
+   ],
+   "name": "Kansas City",
+   "type": "major",
+   "loads": []
+  },
+  {
+   "cell": [
+    28,
+    6
+   ],
+   "name": "New Orleans",
+   "type": "medium",
+   "loads": [
+    "rice"
+   ]
+  },
+  {
+   "cell": [
+    22,
+    10
+   ],
+   "name": "Houston",
+   "type": "medium",
+   "loads": [
+    "oil",
+    "rice"
+   ]
+  },
+  {
+   "cell": [
+    19,
+    5
+   ],
+   "name": "Oklahoma City",
+   "type": "small",
+   "loads": [
+    "oil",
+    "wheat"
+   ]
+  },
+  {
+   "cell": [
+    20,
+    8
+   ],
+   "name": "Dallas",
+   "type": "medium",
+   "loads": [
+    "oil",
+    "cotton"
+   ]
+  },
+  {
+   "cell": [
+    8,
+    10
+   ],
+   "name": "Santa Fe",
+   "type": "small",
+   "loads": [
+    "coal",
+    "uranium"
+   ]
+  },
+  {
+   "cell": [
+    -3,
+    13
+   ],
+   "name": "Las Vegas",
+   "type": "small",
+   "loads": []
+  },
+  {
+   "cell": [
+    -7,
+    17
+   ],
+   "name": "Los Angeles",
+   "type": "major",
+   "loads": []
+  },
+  {
+   "cell": [
+    1,
+    16
+   ],
+   "name": "Phoenix",
+   "type": "small",
+   "loads": [
+    "copper"
+   ]
+  },
+  {
+   "cell": [
+    -6,
+    19
+   ],
+   "name": "San Diego",
+   "type": "small",
+   "loads": [
+    "fruit",
+    "machinery"
+   ]
+  },
+  {
+   "cell": [
+    8,
+    19
+   ],
+   "name": "Chihuahua",
+   "type": "small",
+   "loads": [
+    "cattle"
+   ]
+  },
+  {
+   "cell": [
+    12,
+    20
+   ],
+   "name": "Torreon",
+   "type": "small",
+   "loads": [
+    "cotton",
+    "sheep"
+   ]
+  },
+  {
+   "cell": [
+    16,
+    18
+   ],
+   "name": "Monterrey",
+   "type": "medium",
+   "loads": [
+    "steel",
+    "textiles"
+   ]
+  },
+  {
+   "cell": [
+    9,
+    23
+   ],
+   "name": "Durango",
+   "type": "small",
+   "loads": [
+    "silver",
+    "textiles"
+   ]
+  },
+  {
+   "cell": [
+    6,
+    25
+   ],
+   "name": "Culiacan",
+   "type": "small",
+   "loads": []
+  },
+  {
+   "cell": [
+    11,
+    28
+   ],
+   "name": "Guadalajara",
+   "type": "medium",
+   "loads": [
+    "corn",
+    "wheat"
+   ]
+  },
+  {
+   "cell": [
+    19,
+    21
+   ],
+   "name": "Tampico",
+   "type": "small",
+   "loads": [
+    "fish",
+    "oil"
+   ]
+  },
+  {
+   "cell": [
+    22,
+    24
+   ],
+   "name": "Veracruz",
+   "type": "small",
+   "loads": [
+    "coffee",
+    "imports"
+   ]
+  },
+  {
+   "cell": [
+    18,
+    26
+   ],
+   "name": "Mexico City",
+   "type": "major",
+   "loads": []
+  },
+  {
+   "cell": [
+    1,
+    21
+   ],
+   "name": "Hermasillo",
+   "type": "small",
+   "loads": [
+    "fish"
+   ]
+  },
+  {
+   "cell": [
+    7,
+    16
+   ],
+   "name": "Juarez",
+   "type": "small",
+   "loads": [
+    "machinery"
+   ]
+  }
+ ]
+}
