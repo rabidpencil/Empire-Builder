@@ -71,18 +71,38 @@ function makeCore(G, CARDS, CITIES){
     return best;
   }
 
-  function plan(hand,loads,speed,owned,topn){
+  // Circus: a card whose number is a multiple of 5 can instead be used to haul a
+  // circus chip to that card's lowest-paying city for a flat $20M. The chip then
+  // lives in that city. Two chips exist, so at most two circus legs at once.
+  function circusOption(cardNo){
+    const ds=CARDS[cardNo]; if(!ds) return null;
+    if(Number(cardNo)%5!==0) return null;
+    let lo=ds[0]; for(const d of ds) if(d.payout<lo.payout) lo=d;
+    return {circus:true,load:'circus',city:lo.city,payout:20};
+  }
+
+  function plan(hand,loads,speed,owned,topn,circus){
     owned=owned||new Set();
+    circus=(circus&&circus.length?circus:['tampa','tampa']).map(norm);
     const CD={}; for(const k in CITY) CD[k]=dijkstra(CITY[k],owned);
     const combos=[];
     const pick=(idx,chosen)=>{ if(chosen.length===loads){ combos.push(chosen.slice()); return; }
-      for(let i=idx;i<hand.length;i++) for(const d of (CARDS[hand[i]]||[]))
-        pick(i+1,chosen.concat([{card:hand[i],d}])); };
+      for(let i=idx;i<hand.length;i++){
+        for(const d of (CARDS[hand[i]]||[])) pick(i+1,chosen.concat([{card:hand[i],d}]));
+        const c=circusOption(hand[i]);
+        if(c && chosen.filter(x=>x.d.circus).length < circus.length)
+          pick(i+1,chosen.concat([{card:hand[i],d:c}]));
+      } };
     pick(0,[]);
     const cand=[];
     for(const combo of combos){
-      const srcLists=combo.map(c=>SRC[c.d.load.toLowerCase()]||[]);
+      const srcLists=combo.map(c=> c.d.circus ? [...new Set(circus)] : (SRC[c.d.load.toLowerCase()]||[]));
       const walk=(i,acc)=>{ if(i===srcLists.length){
+          // don't take more chips out of a city than are parked there
+          // a chip already sitting in the destination city isn't a delivery
+          for(let j=0;j<combo.length;j++) if(combo[j].d.circus && acc[j]===norm(combo[j].d.city)) return;
+          const need={}; combo.forEach((c,j)=>{ if(c.d.circus) need[acc[j]]=(need[acc[j]]||0)+1; });
+          for(const k in need){ const have=circus.filter(x=>x===k).length; if(need[k]>have) return; }
           const terms=[]; combo.forEach((c,j)=>{ terms.push(acc[j]); terms.push(norm(c.d.city)); });
           const uniq=[...new Set(terms)];
           let bound=0; const inn=new Set([uniq[0]]);
@@ -103,7 +123,8 @@ function makeCore(G, CARDS, CITIES){
       const mv=tourMoves(nodes,stops,owned);
       out.push({build:cost,moves:mv,turns:Math.ceil(mv/speed),
         payout:c.combo.reduce((s,x)=>s+x.d.payout,0),
-        legs:c.combo.map((x,j)=>({card:x.card,load:x.d.load,from:NAME[c.srcs[j]],to:x.d.city,pay:x.d.payout})),
+        legs:c.combo.map((x,j)=>({card:x.card,load:x.d.load,circus:!!x.d.circus,
+          from:NAME[c.srcs[j]]||c.srcs[j],to:x.d.city,pay:x.d.payout})),
         nodes:[...nodes]});
     }
     out.sort((a,b)=>a.build-b.build || a.moves-b.moves);

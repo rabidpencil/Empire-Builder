@@ -21,6 +21,8 @@ button{background:#2b3852;color:#fff;border:1px solid #3d4f74;border-radius:8px;
 button:active{background:#37476a}
 button.go{background:var(--accent);border-color:var(--accent);color:#0b1220;font-weight:600;flex:1}
 button.sm{padding:6px 10px;font-size:13px}
+select{background:#0c0e13;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px;font-size:14px}
+.circus{color:#ffca57;font-weight:600}
 .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .seg div{padding:8px 12px;font-size:14px;color:var(--dim);cursor:pointer;background:#0c0e13}
 .seg div.on{background:#2b3852;color:#fff}
@@ -50,6 +52,10 @@ main{padding:12px 16px}
   <div class="seg" id="lds"><div data-v="2">2 loads</div><div data-v="3">3 loads</div></div>
 </div>
 <div class="row">
+  <label>circus</label>
+  <select id="k0"></select><select id="k1"></select>
+</div>
+<div class="row">
   <button class="go" id="go">Plan</button>
   <button class="sm" id="clr">Clear track</button>
 </div>
@@ -60,15 +66,21 @@ main{padding:12px 16px}
 const G=__G__, CARDS=__C__, CITIES=__CI__;
 __CORE__
 const core=makeCore(G,CARDS,CITIES);
-let owned=new Set(), speed=9, loads=2;
+let owned=new Set(), speed=9, loads=2, circus=['tampa','tampa'];
 try{ const s=localStorage.getItem('eb_track'); if(s) owned=new Set(JSON.parse(s));
-     const t=localStorage.getItem('eb_train'); if(t){const o=JSON.parse(t);speed=o.s;loads=o.l;} }catch(e){}
+     const t=localStorage.getItem('eb_train'); if(t){const o=JSON.parse(t);speed=o.s;loads=o.l;}
+     const k=localStorage.getItem('eb_circus'); if(k) circus=JSON.parse(k); }catch(e){}
 function saveTrack(){ try{ localStorage.setItem('eb_track',JSON.stringify([...owned])); }catch(e){} }
 function saveTrain(){ try{ localStorage.setItem('eb_train',JSON.stringify({s:speed,l:loads})); }catch(e){} }
 function seg(id,val,set){ const el=document.getElementById(id);
   [...el.children].forEach(d=>{ d.classList.toggle('on', +d.dataset.v===val());
     d.onclick=()=>{ set(+d.dataset.v); saveTrain(); seg(id,val,set); }; }); }
 seg('spd',()=>speed,v=>speed=v); seg('lds',()=>loads,v=>loads=v);
+const sorted=[...CITIES].sort((a,b)=>a.name.localeCompare(b.name));
+[0,1].forEach(i=>{ const el=document.getElementById('k'+i);
+  el.innerHTML=sorted.map(c=>`<option value="${c.key}">${c.name}</option>`).join('');
+  el.value=circus[i]||'tampa';
+  el.onchange=()=>{ circus[i]=el.value; try{localStorage.setItem('eb_circus',JSON.stringify(circus));}catch(e){} }; });
 function trackLine(){ document.getElementById('track').textContent =
   owned.size ? owned.size+' segments of track already built (counted as free)' : 'no track built yet'; }
 trackLine();
@@ -82,12 +94,12 @@ document.getElementById('go').onclick=()=>{
   out.innerHTML='<div class="empty">Working…</div>';
   setTimeout(()=>{
     const t0=Date.now();
-    const res=core.plan(hand,loads,speed,owned,10);
+    const res=core.plan(hand,loads,speed,owned,10,circus);
     if(!res.length){ out.innerHTML='<div class="empty">No legal combination found.</div>'; return; }
     out.innerHTML=res.map((r,i)=>`<div class="res">
       <div class="hd"><span class="cost">$${r.build}M</span>
         <span class="mv">${r.moves} moves · ${r.turns} turn${r.turns===1?'':'s'} · pays <span class="pay">$${r.payout}M</span></span></div>
-      ${r.legs.map(l=>`<div class="leg">card <b>${l.card}</b> · ${l.load}: ${l.from} &rarr; ${l.to} <span class="pay">$${l.pay}M</span></div>`).join('')}
+      ${r.legs.map(l=>`<div class="leg">card <b>${l.card}</b> · <span class="${l.circus?'circus':''}">${l.load}</span>: ${l.from} &rarr; ${l.to} <span class="pay">$${l.pay}M</span></div>`).join('')}
       <div class="row" style="margin:10px 0 0"><button class="sm" data-i="${i}">Mark this track as built</button></div>
     </div>`).join('')+`<div class="note">${res.length} options · ${(Date.now()-t0)/1000}s · ranked by new track cost</div>`;
     out.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{
