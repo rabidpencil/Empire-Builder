@@ -1,0 +1,1 @@
+{"NorthWest": {"K": [[0, 1], [1, 0]]}, "NorthCentral": {"K": [[0, 1], [1, 0]]}, "NorthEast": {"K": [[0, -1], [1, 1]]}, "SouthWest": {"K": [[0, 1], [1, 0]]}, "SouthCentral": {"K": [[0, 1], [1, 0]]}, "SouthEast": {"K": [[0, 1], [1, 0]]}}
