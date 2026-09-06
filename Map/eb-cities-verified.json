@@ -27,7 +27,8 @@
    "loads": [
     "fish",
     "nickel"
-   ]
+   ],
+   "key": "vancouver"
   },
   {
    "cell": [
@@ -40,7 +41,8 @@
     "copper",
     "fish",
     "wood"
-   ]
+   ],
+   "key": "portlandor"
   },
   {
    "cell": [
@@ -51,7 +53,8 @@
    "type": "small",
    "loads": [
     "lead"
-   ]
+   ],
+   "key": "boise"
   },
   {
    "cell": [
@@ -64,7 +67,8 @@
     "sugar",
     "fruit",
     "imports"
-   ]
+   ],
+   "key": "sanfrancisco"
   },
   {
    "cell": [
@@ -73,7 +77,8 @@
    ],
    "name": "Seattle",
    "type": "major",
-   "loads": []
+   "loads": [],
+   "key": "seattle"
   },
   {
    "cell": [
@@ -85,7 +90,8 @@
    "loads": [
     "cattle",
     "lead"
-   ]
+   ],
+   "key": "calgary"
   },
   {
    "cell": [
@@ -97,7 +103,8 @@
    "loads": [
     "cattle",
     "uranium"
-   ]
+   ],
+   "key": "regina"
   },
   {
    "cell": [
@@ -109,7 +116,8 @@
    "loads": [
     "sheep",
     "cattle"
-   ]
+   ],
+   "key": "billings"
   },
   {
    "cell": [
@@ -120,7 +128,8 @@
    "type": "small",
    "loads": [
     "cattle"
-   ]
+   ],
+   "key": "cheyenne"
   },
   {
    "cell": [
@@ -131,7 +140,8 @@
    "type": "medium",
    "loads": [
     "lead"
-   ]
+   ],
+   "key": "denver"
   },
   {
    "cell": [
@@ -143,7 +153,8 @@
    "loads": [
     "coal",
     "sheep"
-   ]
+   ],
+   "key": "saltlakecity"
   },
   {
    "cell": [
@@ -155,7 +166,8 @@
    "loads": [
     "oats",
     "wheet"
-   ]
+   ],
+   "key": "winnipeg"
   },
   {
    "cell": [
@@ -166,7 +178,8 @@
    "type": "small",
    "loads": [
     "oats"
-   ]
+   ],
+   "key": "fargo"
   },
   {
    "cell": [
@@ -178,7 +191,8 @@
    "loads": [
     "oats",
     "wheat"
-   ]
+   ],
+   "key": "omaha"
   },
   {
    "cell": [
@@ -190,7 +204,8 @@
    "loads": [
     "coal",
     "iron"
-   ]
+   ],
+   "key": "duluth"
   },
   {
    "cell": [
@@ -201,7 +216,8 @@
    "type": "medium",
    "loads": [
     "corn"
-   ]
+   ],
+   "key": "minneapolis"
   },
   {
    "cell": [
@@ -213,7 +229,8 @@
    "loads": [
     "corn",
     "swine"
-   ]
+   ],
+   "key": "desmoines"
   },
   {
    "cell": [
@@ -224,7 +241,8 @@
    "type": "major",
    "loads": [
     "tourists"
-   ]
+   ],
+   "key": "chicago"
   },
   {
    "cell": [
@@ -235,7 +253,8 @@
    "type": "medium",
    "loads": [
     "cars"
-   ]
+   ],
+   "key": "detroit"
   },
   {
    "cell": [
@@ -247,7 +266,8 @@
    "loads": [
     "cars",
     "machinery"
-   ]
+   ],
+   "key": "toronto"
   },
   {
    "cell": [
@@ -258,7 +278,8 @@
    "type": "small",
    "loads": [
     "nickel"
-   ]
+   ],
+   "key": "sudbury"
   },
   {
    "cell": [
@@ -270,18 +291,20 @@
    "loads": [
     "coal",
     "machinery"
-   ]
+   ],
+   "key": "cincinnati"
   },
   {
    "cell": [
     43,
     -25
    ],
-   "name": "Montreal",
+   "name": "Montr\u00e9al",
    "type": "medium",
    "loads": [
     "imports"
-   ]
+   ],
+   "key": "montreal"
   },
   {
    "cell": [
@@ -292,7 +315,8 @@
    "type": "small",
    "loads": [
     "wood"
-   ]
+   ],
+   "key": "portlandme"
   },
   {
    "cell": [
@@ -304,7 +328,8 @@
    "loads": [
     "fish",
     "machinery"
-   ]
+   ],
+   "key": "boston"
   },
   {
    "cell": [
@@ -315,7 +340,8 @@
    "type": "major",
    "loads": [
     "tourists"
-   ]
+   ],
+   "key": "newyork"
   },
   {
    "cell": [
@@ -326,7 +352,8 @@
    "type": "medium",
    "loads": [
     "imports"
-   ]
+   ],
+   "key": "philadelphia"
   },
   {
    "cell": [
@@ -337,7 +364,8 @@
    "type": "small",
    "loads": [
     "machinery"
-   ]
+   ],
+   "key": "buffalo"
   },
   {
    "cell": [
@@ -348,16 +376,18 @@
    "type": "small",
    "loads": [
     "steel"
-   ]
+   ],
+   "key": "pittsburgh"
   },
   {
    "cell": [
     42,
     -15
    ],
-   "name": "Washington, D.C.",
+   "name": "Washington DC",
    "type": "small",
-   "loads": []
+   "loads": [],
+   "key": "washingtondc"
   },
   {
    "cell": [
@@ -369,7 +399,8 @@
    "loads": [
     "imports",
     "fish"
-   ]
+   ],
+   "key": "norfolk"
   },
   {
    "cell": [
@@ -381,7 +412,8 @@
    "loads": [
     "tobacco",
     "machinery"
-   ]
+   ],
+   "key": "raleigh"
   },
   {
    "cell": [
@@ -392,7 +424,8 @@
    "type": "small",
    "loads": [
     "machinery"
-   ]
+   ],
+   "key": "knoxville"
   },
   {
    "cell": [
@@ -401,7 +434,8 @@
    ],
    "name": "Atlanta",
    "type": "major",
-   "loads": []
+   "loads": [],
+   "key": "atlanta"
   },
   {
    "cell": [
@@ -413,7 +447,8 @@
    "loads": [
     "iron",
     "steel"
-   ]
+   ],
+   "key": "birmingham"
   },
   {
    "cell": [
@@ -425,7 +460,8 @@
    "loads": [
     "cotton",
     "tobacco"
-   ]
+   ],
+   "key": "savannah"
   },
   {
    "cell": [
@@ -436,7 +472,8 @@
    "type": "small",
    "loads": [
     "machinery"
-   ]
+   ],
+   "key": "jacksonville"
   },
   {
    "cell": [
@@ -447,7 +484,8 @@
    "type": "small",
    "loads": [
     "fruit"
-   ]
+   ],
+   "key": "tampa"
   },
   {
    "cell": [
@@ -458,7 +496,8 @@
    "type": "small",
    "loads": [
     "cattle"
-   ]
+   ],
+   "key": "miami"
   },
   {
    "cell": [
@@ -469,7 +508,8 @@
    "type": "small",
    "loads": [
     "bauxite"
-   ]
+   ],
+   "key": "memphis"
   },
   {
    "cell": [
@@ -481,7 +521,8 @@
    "loads": [
     "corn",
     "swine"
-   ]
+   ],
+   "key": "stlouis"
   },
   {
    "cell": [
@@ -490,7 +531,8 @@
    ],
    "name": "Kansas City",
    "type": "major",
-   "loads": []
+   "loads": [],
+   "key": "kansascity"
   },
   {
    "cell": [
@@ -501,7 +543,8 @@
    "type": "medium",
    "loads": [
     "rice"
-   ]
+   ],
+   "key": "neworleans"
   },
   {
    "cell": [
@@ -513,7 +556,8 @@
    "loads": [
     "oil",
     "rice"
-   ]
+   ],
+   "key": "houston"
   },
   {
    "cell": [
@@ -525,7 +569,8 @@
    "loads": [
     "oil",
     "wheat"
-   ]
+   ],
+   "key": "oklahomacity"
   },
   {
    "cell": [
@@ -537,7 +582,8 @@
    "loads": [
     "oil",
     "cotton"
-   ]
+   ],
+   "key": "dallas"
   },
   {
    "cell": [
@@ -549,7 +595,8 @@
    "loads": [
     "coal",
     "uranium"
-   ]
+   ],
+   "key": "santafe"
   },
   {
    "cell": [
@@ -558,7 +605,8 @@
    ],
    "name": "Las Vegas",
    "type": "small",
-   "loads": []
+   "loads": [],
+   "key": "lasvegas"
   },
   {
    "cell": [
@@ -567,7 +615,8 @@
    ],
    "name": "Los Angeles",
    "type": "major",
-   "loads": []
+   "loads": [],
+   "key": "losangeles"
   },
   {
    "cell": [
@@ -578,7 +627,8 @@
    "type": "small",
    "loads": [
     "copper"
-   ]
+   ],
+   "key": "phoenix"
   },
   {
    "cell": [
@@ -590,7 +640,8 @@
    "loads": [
     "fruit",
     "machinery"
-   ]
+   ],
+   "key": "sandiego"
   },
   {
    "cell": [
@@ -601,19 +652,21 @@
    "type": "small",
    "loads": [
     "cattle"
-   ]
+   ],
+   "key": "chihuahua"
   },
   {
    "cell": [
     12,
     20
    ],
-   "name": "Torreon",
+   "name": "Torre\u00f3n",
    "type": "small",
    "loads": [
     "cotton",
     "sheep"
-   ]
+   ],
+   "key": "torreon"
   },
   {
    "cell": [
@@ -625,7 +678,8 @@
    "loads": [
     "steel",
     "textiles"
-   ]
+   ],
+   "key": "monterrey"
   },
   {
    "cell": [
@@ -637,16 +691,18 @@
    "loads": [
     "silver",
     "textiles"
-   ]
+   ],
+   "key": "durango"
   },
   {
    "cell": [
     6,
     25
    ],
-   "name": "Culiacan",
+   "name": "Culiac\u00e1n",
    "type": "small",
-   "loads": []
+   "loads": [],
+   "key": "culiacan"
   },
   {
    "cell": [
@@ -658,7 +714,8 @@
    "loads": [
     "corn",
     "wheat"
-   ]
+   ],
+   "key": "guadalajara"
   },
   {
    "cell": [
@@ -670,7 +727,8 @@
    "loads": [
     "fish",
     "oil"
-   ]
+   ],
+   "key": "tampico"
   },
   {
    "cell": [
@@ -682,7 +740,8 @@
    "loads": [
     "coffee",
     "imports"
-   ]
+   ],
+   "key": "veracruz"
   },
   {
    "cell": [
@@ -691,29 +750,33 @@
    ],
    "name": "Mexico City",
    "type": "major",
-   "loads": []
+   "loads": [],
+   "key": "mexicocity"
   },
   {
    "cell": [
     1,
     21
    ],
-   "name": "Hermasillo",
+   "name": "Hermosillo",
    "type": "small",
    "loads": [
     "fish"
-   ]
+   ],
+   "key": "hermosillo"
   },
   {
    "cell": [
     7,
     16
    ],
-   "name": "Juarez",
+   "name": "Ju\u00e1rez",
    "type": "small",
    "loads": [
     "machinery"
-   ]
+   ],
+   "key": "juarez"
   }
- ]
+ ],
+ "note": "join on key (accent-stripped, lowercase, alphanumeric only); name is the printed spelling"
 }
