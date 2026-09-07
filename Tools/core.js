@@ -10,6 +10,29 @@ function makeCore(G, CARDS, CITIES){
     for(const l of c.loads){ const k=l.toLowerCase(); (SRC[k]=SRC[k]||[]).push(c.key); } }
   const CITY=G.city;
 
+  // How attractive a city is to be connected to, from the cards themselves:
+  // how often it is a destination (and for how much), plus how much demand its
+  // goods can feed, divided by how many rival cities also produce them.
+  const VALUE=(()=>{
+    const demN={},demP={},loadN={},loadP={},prod={};
+    for(const k in CARDS) for(const d of CARDS[k]){
+      const c=norm(d.city); demN[c]=(demN[c]||0)+1; demP[c]=(demP[c]||0)+d.payout;
+      const l=d.load.toLowerCase(); loadN[l]=(loadN[l]||0)+1; loadP[l]=(loadP[l]||0)+d.payout;
+    }
+    for(const c of CITIES) for(const l of c.loads){ const k=l.toLowerCase(); (prod[k]=prod[k]||[]).push(c.key); }
+    const v={};
+    for(const c of CITIES){
+      let sup=0;
+      for(const l of c.loads){ const k=l.toLowerCase();
+        if(loadN[k]) sup += loadN[k]*(loadP[k]/loadN[k])/Math.max((prod[k]||[]).length,1); }
+      v[c.key]=(demP[c.key]||0)+sup;
+    }
+    const mx=Math.max(...Object.values(v));
+    for(const k in v) v[k]=Math.round(100*v[k]/mx);
+    return v;
+  })();
+  const NODE2CITY={}; for(const k in CITY) NODE2CITY[CITY[k]]=k;
+
   class PQ{ constructor(){this.a=[];}
     push(x){const a=this.a;a.push(x);let i=a.length-1;while(i>0){const p=(i-1)>>1;if(a[p][0]<=a[i][0])break;[a[p],a[i]]=[a[i],a[p]];i=p;}}
     pop(){const a=this.a,t=a[0],l=a.pop();if(a.length){a[0]=l;let i=0;for(;;){const x=2*i+1,y=x+1;let m=i;
@@ -51,7 +74,7 @@ function makeCore(G, CARDS, CITIES){
     return {cost:dp[full][root],nodes};
   }
 
-  function tourMoves(nodes,stops,owned){
+  function tourMoves(nodes,stops,owned,start){
     const sub=new Set(nodes);
     for(const e of owned){ const [a,b]=e.split('_').map(Number); sub.add(a); sub.add(b); }
     const bfs=s=>{ const d=new Map([[s,0]]); const q=[s];
@@ -59,11 +82,14 @@ function makeCore(G, CARDS, CITIES){
         for(const [v] of adj[u]) if(sub.has(v)&&!d.has(v)&&(nodes.has(v)||owned.has(ekey(u,v)))){ d.set(v,d.get(u)+1); q.push(v); } }
       return d; };
     const D=new Map(); for(const s of new Set(stops)) D.set(s,bfs(s));
+    if(start!==undefined&&start!==null&&!D.has(start)) D.set(start,bfs(start));
     const n=stops.length; let best=Infinity;
     const perm=(arr,cur)=>{ if(!arr.length){
         const pos=new Map(cur.map((x,i)=>[x,i]));
         for(let j=0;j*2+1<n;j++) if(pos.get(j*2)>pos.get(j*2+1)) return;
-        let tot=0; for(let i=0;i+1<cur.length;i++){ const d=D.get(stops[cur[i]]); const v=d.get(stops[cur[i+1]]);
+        let tot=0;
+        if(start!==undefined&&start!==null){ const v=D.get(start).get(stops[cur[0]]); if(v===undefined) return; tot+=v; }
+        for(let i=0;i+1<cur.length;i++){ const d=D.get(stops[cur[i]]); const v=d.get(stops[cur[i+1]]);
           if(v===undefined) return; tot+=v; }
         if(tot<best) best=tot; return; }
       for(let i=0;i<arr.length;i++) perm(arr.filter((_,j)=>j!==i),cur.concat(arr[i])); };
@@ -81,7 +107,7 @@ function makeCore(G, CARDS, CITIES){
     return {circus:true,load:'circus',city:lo.city,payout:20};
   }
 
-  function plan(hand,loads,speed,owned,topn,circus){
+  function plan(hand,loads,speed,owned,topn,circus,startKey){
     owned=owned||new Set();
     circus=(circus&&circus.length?circus:['tampa','tampa']).map(norm);
     const CD={}; for(const k in CITY) CD[k]=dijkstra(CITY[k],owned);
@@ -118,18 +144,34 @@ function makeCore(G, CARDS, CITIES){
     const out=[];
     for(const c of cand.slice(0,topn||8)){
       const tn=c.terms.map(k=>CITY[k]);
-      const {cost,nodes}=steiner(tn,owned);
+      const tn2=startKey?tn.concat([CITY[startKey]]):tn;
+      const {cost,nodes}=steiner(tn2,owned);
       const stops=[]; c.combo.forEach((x,j)=>{ stops.push(CITY[c.srcs[j]]); stops.push(CITY[norm(x.d.city)]); });
-      const mv=tourMoves(nodes,stops,owned);
-      out.push({build:cost,moves:mv,turns:Math.ceil(mv/speed),
+      const mv=tourMoves(nodes,stops,owned,startKey?CITY[startKey]:null);
+      // cities this plan newly connects, and what they are worth
+      const already=new Set();
+      for(const e of owned){ const [a,b]=e.split('_').map(Number);
+        if(NODE2CITY[a])already.add(NODE2CITY[a]); if(NODE2CITY[b])already.add(NODE2CITY[b]); }
+      let reach=0; const newCities=[];
+      for(const nd of nodes){ const ck=NODE2CITY[nd];
+        if(ck&&!already.has(ck)){ reach+=VALUE[ck]||0; newCities.push(NAME[ck]); } }
+      const turns=Math.max(1,Math.ceil(mv/speed));
+      out.push({build:cost,moves:mv,turns,reach,newCities,
+        perTurn:Math.round(c.combo.reduce((s,x)=>s+x.d.payout,0)/turns),
         payout:c.combo.reduce((s,x)=>s+x.d.payout,0),
         legs:c.combo.map((x,j)=>({card:x.card,load:x.d.load,circus:!!x.d.circus,
           from:NAME[c.srcs[j]]||c.srcs[j],to:x.d.city,pay:x.d.payout})),
         nodes:[...nodes]});
     }
-    out.sort((a,b)=>a.build-b.build || a.moves-b.moves);
-    return out;
+    return out;   // caller sorts
   }
-  return {plan,NAME,CITY,ekey,norm};
+  function sortBy(res,mode){
+    const r=res.slice();
+    if(mode==='perTurn') r.sort((a,b)=>b.perTurn-a.perTurn || a.build-b.build);
+    else if(mode==='reach') r.sort((a,b)=>(b.reach-b.build*2)-(a.reach-a.build*2) || a.build-b.build);
+    else r.sort((a,b)=>a.build-b.build || a.moves-b.moves);
+    return r;
+  }
+  return {plan,sortBy,NAME,CITY,ekey,norm,VALUE,NODE2CITY};
 }
 if(typeof module!=='undefined') module.exports={makeCore};
