@@ -68,18 +68,21 @@ function makeCore(G, CARDS, CITIES){
     }
     const full=F-1; let root=0;
     for(let v=1;v<N;v++) if(dp[full][v]<dp[full][root]) root=v;
-    const nodes=new Set(), st=[[full,root]];
+    const nodes=new Set(), tedges=new Set(), st=[[full,root]];
     while(st.length){ const [m,v]=st.pop(); nodes.add(v); const p=par[m][v];
-      if(!p)continue; if(p[0]==='m'){st.push([p[1],v]);st.push([p[2],v]);} else st.push([m,p[1]]); }
-    return {cost:dp[full][root],nodes};
+      if(!p)continue;
+      if(p[0]==='m'){st.push([p[1],v]);st.push([p[2],v]);}
+      else { tedges.add(ekey(p[1],v)); st.push([m,p[1]]); } }
+    return {cost:dp[full][root],nodes,edges:tedges};
   }
 
-  function tourMoves(nodes,stops,owned,start){
+  function tourMoves(nodes,stops,owned,start,tedges){
+    const ok=e=>owned.has(e)||(tedges&&tedges.has(e));
     const sub=new Set(nodes);
     for(const e of owned){ const [a,b]=e.split('_').map(Number); sub.add(a); sub.add(b); }
     const bfs=s=>{ const d=new Map([[s,0]]); const q=[s];
       for(let i=0;i<q.length;i++){ const u=q[i];
-        for(const [v] of adj[u]) if(sub.has(v)&&!d.has(v)&&(nodes.has(v)||owned.has(ekey(u,v)))){ d.set(v,d.get(u)+1); q.push(v); } }
+        for(const [v] of adj[u]) if(!d.has(v)&&ok(ekey(u,v))){ d.set(v,d.get(u)+1); q.push(v); } }
       return d; };
     const D=new Map(); for(const s of new Set(stops)) D.set(s,bfs(s));
     if(start!==undefined&&start!==null&&!D.has(start)) D.set(start,bfs(start));
@@ -107,12 +110,32 @@ function makeCore(G, CARDS, CITIES){
     return {circus:true,load:'circus',city:lo.city,payout:20};
   }
 
-  function plan(hand,loads,speed,owned,topn,circus,startKey){
+  // cheapest connection between two cities, for entering track by hand
+  function connect(aKey,bKey,owned){
+    owned=owned||new Set();
+    const src=CITY[aKey], dst=CITY[bKey];
+    if(src===undefined||dst===undefined) return null;
+    const d=new Float64Array(N).fill(Infinity), prev=new Int32Array(N).fill(-1);
+    d[src]=0; const pq=new PQ(); pq.push([0,src]);
+    while(pq.size){ const [c,u]=pq.pop(); if(c>d[u])continue; if(u===dst)break;
+      for(const [v,sg] of adj[u]){ const nc=c+w(u,v,sg,owned); if(nc<d[v]){d[v]=nc;prev[v]=u;pq.push([nc,v]);} } }
+    if(d[dst]===Infinity) return null;
+    const edges=[]; let v=dst;
+    while(prev[v]>=0){ edges.push(ekey(prev[v],v)); v=prev[v]; }
+    return {cost:d[dst],edges};
+  }
+
+  function plan(hand,loads,speed,owned,topn,circus,startKey,carrying,routes){
     owned=owned||new Set();
     circus=(circus&&circus.length?circus:['tampa','tampa']).map(norm);
     const CD={}; for(const k in CITY) CD[k]=dijkstra(CITY[k],owned);
+    carrying=carrying||[];
+    const held=carrying.map(c=>({card:c.card,d:Object.assign({},CARDS[c.card][c.idx],{held:true})}));
+    const want=Math.max(0,Math.min(routes||loads,loads)-held.length);
+    const usedCards=new Set(held.map(h=>h.card));
+    hand=hand.filter(h=>!usedCards.has(h));
     const combos=[];
-    const pick=(idx,chosen)=>{ if(chosen.length===loads){ combos.push(chosen.slice()); return; }
+    const pick=(idx,chosen)=>{ if(chosen.length===want){ combos.push(held.concat(chosen)); return; }
       for(let i=idx;i<hand.length;i++){
         for(const d of (CARDS[hand[i]]||[])) pick(i+1,chosen.concat([{card:hand[i],d}]));
         const c=circusOption(hand[i]);
@@ -122,14 +145,16 @@ function makeCore(G, CARDS, CITIES){
     pick(0,[]);
     const cand=[];
     for(const combo of combos){
-      const srcLists=combo.map(c=> c.d.circus ? [...new Set(circus)] : (SRC[c.d.load.toLowerCase()]||[]));
+      // a load already aboard needs no pickup: its leg starts wherever the train is
+      const srcLists=combo.map(c=> c.d.held ? [startKey||norm(c.d.city)]
+                                : c.d.circus ? [...new Set(circus)] : (SRC[c.d.load.toLowerCase()]||[]));
       const walk=(i,acc)=>{ if(i===srcLists.length){
           // don't take more chips out of a city than are parked there
           // a chip already sitting in the destination city isn't a delivery
           for(let j=0;j<combo.length;j++) if(combo[j].d.circus && acc[j]===norm(combo[j].d.city)) return;
           const need={}; combo.forEach((c,j)=>{ if(c.d.circus) need[acc[j]]=(need[acc[j]]||0)+1; });
           for(const k in need){ const have=circus.filter(x=>x===k).length; if(need[k]>have) return; }
-          const terms=[]; combo.forEach((c,j)=>{ terms.push(acc[j]); terms.push(norm(c.d.city)); });
+          const terms=[]; combo.forEach((c,j)=>{ if(!c.d.held) terms.push(acc[j]); terms.push(norm(c.d.city)); });
           const uniq=[...new Set(terms)];
           let bound=0; const inn=new Set([uniq[0]]);
           while(inn.size<uniq.length){ let bd=Infinity,bn=null;
@@ -145,9 +170,9 @@ function makeCore(G, CARDS, CITIES){
     for(const c of cand.slice(0,topn||8)){
       const tn=c.terms.map(k=>CITY[k]);
       const tn2=startKey?tn.concat([CITY[startKey]]):tn;
-      const {cost,nodes}=steiner(tn2,owned);
+      const tre=steiner(tn2,owned); const cost=tre.cost, nodes=tre.nodes;
       const stops=[]; c.combo.forEach((x,j)=>{ stops.push(CITY[c.srcs[j]]); stops.push(CITY[norm(x.d.city)]); });
-      const mv=tourMoves(nodes,stops,owned,startKey?CITY[startKey]:null);
+      const mv=tourMoves(nodes,stops,owned,startKey?CITY[startKey]:null,tre.edges);
       // cities this plan newly connects, and what they are worth
       const already=new Set();
       for(const e of owned){ const [a,b]=e.split('_').map(Number);
@@ -159,9 +184,9 @@ function makeCore(G, CARDS, CITIES){
       out.push({build:cost,moves:mv,turns,reach,newCities,
         perTurn:Math.round(c.combo.reduce((s,x)=>s+x.d.payout,0)/turns),
         payout:c.combo.reduce((s,x)=>s+x.d.payout,0),
-        legs:c.combo.map((x,j)=>({card:x.card,load:x.d.load,circus:!!x.d.circus,
-          from:NAME[c.srcs[j]]||c.srcs[j],to:x.d.city,pay:x.d.payout})),
-        nodes:[...nodes]});
+        legs:c.combo.map((x,j)=>({card:x.card,load:x.d.load,circus:!!x.d.circus,held:!!x.d.held,
+          from:x.d.held?'aboard':(NAME[c.srcs[j]]||c.srcs[j]),to:x.d.city,pay:x.d.payout})),
+        nodes:[...nodes], edges:[...tre.edges]});
     }
     return out;   // caller sorts
   }
@@ -172,6 +197,6 @@ function makeCore(G, CARDS, CITIES){
     else r.sort((a,b)=>a.build-b.build || a.moves-b.moves);
     return r;
   }
-  return {plan,sortBy,NAME,CITY,ekey,norm,VALUE,NODE2CITY};
+  return {plan,sortBy,connect,NAME,CITY,ekey,norm,VALUE,NODE2CITY,CARDS};
 }
 if(typeof module!=='undefined') module.exports={makeCore};

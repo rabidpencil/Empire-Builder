@@ -1,6 +1,6 @@
 import json
 G=open('eb-plan-graph.json').read()
-C=open('/mnt/user-data/uploads/eb-demand-cards.json').read()
+C=open('cards.json').read()
 CI=json.dumps(json.load(open('eb-cities-verified.json'))['cities'],separators=(',',':'))
 CORE=open('core.js').read().split('if(typeof module')[0]
 HTML="""<!DOCTYPE html>
@@ -58,6 +58,14 @@ main{padding:12px 16px}
   <select id="k0"></select><select id="k1"></select>
 </div>
 <div class="row">
+  <label>routes</label>
+  <div class="seg" id="rts"><div data-v="1">1</div><div data-v="2">2</div><div data-v="3">3</div></div>
+</div>
+<div class="row" id="holdrow">
+  <label>aboard</label><select id="hold"></select><button class="sm" id="addhold">+</button>
+</div>
+<div id="held" class="note"></div>
+<div class="row">
   <label>rank by</label>
   <div class="seg" id="mode"><div data-v="build">cheapest</div><div data-v="perTurn">$/turn</div><div data-v="reach">expansion</div></div>
 </div>
@@ -71,23 +79,55 @@ main{padding:12px 16px}
 <div id="track"></div>
 </header>
 <svg id="map" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"></svg>
+<div class="row" style="padding:0 16px">
+  <label>add track</label><select id="ta"></select><select id="tb"></select>
+  <button class="sm" id="addtrack">Add</button><button class="sm" id="undo">Undo</button>
+</div>
+<div id="tinfo" class="note" style="padding:0 16px"></div>
 <main id="out"><div class="empty">Enter your three card numbers and tap Plan.</div></main>
 <script>
 const G=__G__, CARDS=__C__, CITIES=__CI__;
 __CORE__
 const core=makeCore(G,CARDS,CITIES);
 let owned=new Set(), speed=9, loads=2, circus=['tampa','tampa'], mode='build', startKey='';
+let routes=2, carrying=[], undoStack=[];
 try{ const s=localStorage.getItem('eb_track'); if(s) owned=new Set(JSON.parse(s));
      const t=localStorage.getItem('eb_train'); if(t){const o=JSON.parse(t);speed=o.s;loads=o.l;}
      const k=localStorage.getItem('eb_circus'); if(k) circus=JSON.parse(k);
      const m=localStorage.getItem('eb_mode'); if(m) mode=m;
-     const st=localStorage.getItem('eb_start'); if(st!==null) startKey=st; }catch(e){}
+     const st=localStorage.getItem('eb_start'); if(st!==null) startKey=st;
+     const rt=localStorage.getItem('eb_routes'); if(rt) routes=+rt;
+     const cy=localStorage.getItem('eb_carry'); if(cy) carrying=JSON.parse(cy); }catch(e){}
 function saveTrack(){ try{ localStorage.setItem('eb_track',JSON.stringify([...owned])); }catch(e){} }
 function saveTrain(){ try{ localStorage.setItem('eb_train',JSON.stringify({s:speed,l:loads})); }catch(e){} }
 function seg(id,val,set){ const el=document.getElementById(id);
   [...el.children].forEach(d=>{ d.classList.toggle('on', +d.dataset.v===val());
     d.onclick=()=>{ set(+d.dataset.v); saveTrain(); seg(id,val,set); }; }); }
-seg('spd',()=>speed,v=>speed=v); seg('lds',()=>loads,v=>loads=v);
+seg('spd',()=>speed,v=>speed=v);
+seg('lds',()=>loads,v=>{loads=v; if(routes>loads){routes=loads;} drawRoutes();});
+function drawRoutes(){ const el=document.getElementById('rts');
+  [...el.children].forEach(d=>{ const v=+d.dataset.v;
+    d.style.display=v<=loads?'':'none';
+    d.classList.toggle('on',v===routes);
+    d.onclick=()=>{ routes=v; try{localStorage.setItem('eb_routes',routes);}catch(e){} drawRoutes(); }; }); }
+drawRoutes();
+function hand(){ return ['c1','c2','c3'].map(i=>document.getElementById(i).value.trim()).filter(Boolean); }
+function saveCarry(){ try{localStorage.setItem('eb_carry',JSON.stringify(carrying));}catch(e){} }
+function drawHold(){
+  const sel=document.getElementById('hold'); const opts=[];
+  for(const c of hand()){ const ds=CARDS[c]||[];
+    ds.forEach((d,i)=>opts.push(`<option value="${c}:${i}">card ${c} · ${d.load} &rarr; ${d.city}</option>`)); }
+  sel.innerHTML=opts.join('')||'<option value="">enter cards first</option>';
+  document.getElementById('held').innerHTML = carrying.length
+    ? 'aboard: '+carrying.map((h,i)=>`${CARDS[h.card][h.idx].load} &rarr; ${CARDS[h.card][h.idx].city} <a href="#" data-h="${i}">&times;</a>`).join(' · ')
+    : '';
+  document.querySelectorAll('#held a').forEach(a=>a.onclick=e=>{e.preventDefault();carrying.splice(+a.dataset.h,1);saveCarry();drawHold();});
+}
+document.getElementById('addhold').onclick=()=>{ const v=document.getElementById('hold').value;
+  if(!v) return; const [card,idx]=v.split(':');
+  if(carrying.length>=loads) return;
+  carrying.push({card,idx:+idx}); saveCarry(); drawHold(); };
+['c1','c2','c3'].forEach(i=>document.getElementById(i).addEventListener('input',drawHold));
 (function(){ const el=document.getElementById('mode');
   const paint=()=>[...el.children].forEach(d=>{ d.classList.toggle('on',d.dataset.v===mode);
     d.onclick=()=>{ mode=d.dataset.v; try{localStorage.setItem('eb_mode',mode);}catch(e){} paint(); render(); }; });
@@ -123,21 +163,39 @@ function drawMap(){
       s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${n.type==='major'?1.8:1.1}" fill="${n.type==='major'?'#ff5f5f':'#8d93a4'}"/>`; } }
   svg.innerHTML=s;
 }
+(function(){ const sorted=[...CITIES].sort((a,b)=>a.name.localeCompare(b.name));
+  const o=sorted.map(c=>`<option value="${c.key}">${c.name}</option>`).join('');
+  document.getElementById('ta').innerHTML=o; document.getElementById('tb').innerHTML=o;
+  document.getElementById('addtrack').onclick=()=>{
+    const a=document.getElementById('ta').value,b=document.getElementById('tb').value;
+    if(a===b) return;
+    const r=core.connect(a,b,owned);
+    const info=document.getElementById('tinfo');
+    if(!r){ info.textContent='no route found'; return; }
+    const before=new Set(owned);
+    r.edges.forEach(e=>owned.add(e));
+    undoStack.push(before);
+    info.textContent=`added ${core.NAME[a]} &rarr; ${core.NAME[b]}: $${r.cost}M, ${r.edges.length} segments`;
+    saveTrack(); trackLine(); drawHold(); };
+  document.getElementById('undo').onclick=()=>{ if(!undoStack.length) return;
+    owned=undoStack.pop(); saveTrack(); trackLine();
+    document.getElementById('tinfo').textContent='undone'; }; })();
+
 function trackLine(){ document.getElementById('track').textContent =
   owned.size ? owned.size+' segments of track already built (counted as free)' : 'no track built yet';
   drawMap(); }
 trackLine();
 document.getElementById('clr').onclick=()=>{ owned=new Set(); saveTrack(); trackLine(); };
 document.getElementById('go').onclick=()=>{
-  const hand=['c1','c2','c3'].map(i=>document.getElementById(i).value.trim()).filter(Boolean);
-  const bad=hand.filter(h=>!CARDS[h]);
+  const h=hand();
+  const bad=h.filter(x=>!CARDS[x]);
   const out=document.getElementById('out');
   if(bad.length){ out.innerHTML='<div class="empty">No such card: '+bad.join(', ')+'</div>'; return; }
-  if(hand.length<loads){ out.innerHTML='<div class="empty">Need at least '+loads+' cards for a '+loads+'-load train.</div>'; return; }
+  if(h.length<routes){ out.innerHTML='<div class="empty">Need at least '+routes+' cards to plan '+routes+' routes.</div>'; return; }
   out.innerHTML='<div class="empty">Working…</div>';
   setTimeout(()=>{
     const t0=Date.now();
-    LAST=core.plan(hand,loads,speed,owned,10,circus,startKey||null);
+    LAST=core.plan(h,loads,speed,owned,10,circus,startKey||null,carrying,routes);
     render(Date.now()-t0);
   },30);
 };
@@ -151,12 +209,13 @@ function render(ms){
       <div class="hd"><span class="cost">$${r.build}M</span>
         <span class="mv">${r.moves} moves · ${r.turns} turn${r.turns===1?'':'s'} · pays <span class="pay">$${r.payout}M</span></span></div>
       <div><span class="tag">$${r.perTurn}M/turn</span><span class="tag">expansion ${r.reach}</span>${r.newCities.length?`<span class="tag">opens ${r.newCities.slice(0,4).join(', ')}${r.newCities.length>4?'…':''}</span>`:''}</div>
-      ${r.legs.map(l=>`<div class="leg">card <b>${l.card}</b> · <span class="${l.circus?'circus':''}">${l.load}</span>: ${l.from} &rarr; ${l.to} <span class="pay">$${l.pay}M</span></div>`).join('')}
+      ${r.legs.map(l=>`<div class="leg">card <b>${l.card}</b> · <span class="${l.circus?'circus':''}">${l.load}${l.held?' (aboard)':''}</span>: ${l.from} &rarr; ${l.to} <span class="pay">$${l.pay}M</span></div>`).join('')}
       <div class="row" style="margin:10px 0 0"><button class="sm" data-i="${i}">Mark this track as built</button></div>
     </div>`).join('')+`<div class="note">${res.length} options${ms?' · '+(ms/1000).toFixed(1)+'s':''} · ranked by ${({build:'cheapest build',perTurn:'profit per turn',reach:'expansion value'})[mode]}</div>`;
     out.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{
-      const r=res[+b.dataset.i], s=new Set(r.nodes);
-      for(const [u,v] of G.edges.map(e=>[e[0],e[1]])) if(s.has(u)&&s.has(v)) owned.add(core.ekey(u,v));
+      const r=res[+b.dataset.i];
+      undoStack.push(new Set(owned));
+      r.edges.forEach(e=>owned.add(e));
       saveTrack(); trackLine(); b.textContent='added'; b.disabled=true;
     });
 }
