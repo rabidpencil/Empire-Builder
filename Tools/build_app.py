@@ -67,7 +67,7 @@ main{padding:12px 16px}
 <div id="held" class="note"></div>
 <div class="row">
   <label>rank by</label>
-  <div class="seg" id="mode"><div data-v="build">cheapest</div><div data-v="perTurn">$/turn</div><div data-v="reach">expansion</div></div>
+  <div class="seg" id="mode"><div data-v="build">cheapest</div><div data-v="moves">fewest moves</div><div data-v="perTurn">$/turn</div><div data-v="reach">expansion</div></div>
 </div>
 <div class="row">
   <label>start in</label><select id="start"></select>
@@ -81,7 +81,7 @@ main{padding:12px 16px}
 <svg id="map" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"></svg>
 <div class="row" style="padding:0 16px">
   <label>add track</label><select id="ta"></select><select id="tb"></select>
-  <button class="sm" id="addtrack">Add</button><button class="sm" id="undo">Undo</button>
+  <button class="sm" id="addcheap">Add cheapest</button><button class="sm" id="addshort">Add shortest</button><button class="sm" id="undo">Undo</button>
 </div>
 <div id="tinfo" class="note" style="padding:0 16px"></div>
 <main id="out"><div class="empty">Enter your three card numbers and tap Plan.</div></main>
@@ -208,10 +208,10 @@ function render(ms){
   out.innerHTML=res.map((r,i)=>`<div class="res">
       <div class="hd"><span class="cost">$${r.build}M</span>
         <span class="mv">${r.moves} moves · ${r.turns} turn${r.turns===1?'':'s'} · pays <span class="pay">$${r.payout}M</span></span></div>
-      <div><span class="tag">$${r.perTurn}M/turn</span><span class="tag">expansion ${r.reach}</span>${r.newCities.length?`<span class="tag">opens ${r.newCities.slice(0,4).join(', ')}${r.newCities.length>4?'…':''}</span>`:''}</div>
+      <div><span class="tag">$${r.perTurn}M/turn</span><span class="tag">expansion ${r.reach}</span>${r.fastMoves<r.moves?`<span class="tag">or $${r.fastBuild}M for ${r.fastMoves} moves (${r.fastTurns}t)</span>`:''}${r.newCities.length?`<span class="tag">opens ${r.newCities.slice(0,4).join(', ')}${r.newCities.length>4?'…':''}</span>`:''}</div>
       ${r.legs.map(l=>`<div class="leg">card <b>${l.card}</b> · <span class="${l.circus?'circus':''}">${l.load}${l.held?' (aboard)':''}</span>: ${l.from} &rarr; ${l.to} <span class="pay">$${l.pay}M</span></div>`).join('')}
       <div class="row" style="margin:10px 0 0"><button class="sm" data-i="${i}">Mark this track as built</button></div>
-    </div>`).join('')+`<div class="note">${res.length} options${ms?' · '+(ms/1000).toFixed(1)+'s':''} · ranked by ${({build:'cheapest build',perTurn:'profit per turn',reach:'expansion value'})[mode]}</div>`;
+    </div>`).join('')+`<div class="note">${res.length} options${ms?' · '+(ms/1000).toFixed(1)+'s':''} · ranked by ${({build:'cheapest build',moves:'fewest moves',perTurn:'profit per turn',reach:'expansion value'})[mode]}</div>`;
     out.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{
       const r=res[+b.dataset.i];
       undoStack.push(new Set(owned));
