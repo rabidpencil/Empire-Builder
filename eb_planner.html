@@ -62,7 +62,7 @@ main{padding:12px 16px}
 <div id="held" class="note"></div>
 <div class="row">
   <label>rank by</label>
-  <div class="seg" id="mode"><div data-v="build">cheapest</div><div data-v="perTurn">$/turn</div><div data-v="reach">expansion</div></div>
+  <div class="seg" id="mode"><div data-v="build">cheapest</div><div data-v="moves">fewest moves</div><div data-v="perTurn">$/turn</div><div data-v="reach">expansion</div></div>
 </div>
 <div class="row">
   <label>start in</label><select id="start"></select>
@@ -76,7 +76,7 @@ main{padding:12px 16px}
 <svg id="map" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"></svg>
 <div class="row" style="padding:0 16px">
   <label>add track</label><select id="ta"></select><select id="tb"></select>
-  <button class="sm" id="addtrack">Add</button><button class="sm" id="undo">Undo</button>
+  <button class="sm" id="addcheap">Add cheapest</button><button class="sm" id="addshort">Add shortest</button><button class="sm" id="undo">Undo</button>
 </div>
 <div id="tinfo" class="note" style="padding:0 16px"></div>
 <main id="out"><div class="empty">Enter your three card numbers and tap Plan.</div></main>
@@ -2447,7 +2447,8 @@ function makeCore(G, CARDS, CITIES){
     return d;
   }
 
-  function steiner(terms,owned){
+  function steiner(terms,owned,wf){
+    const W=wf||((u,v,sg)=>w(u,v,sg,owned));
     const t=[...new Set(terms)], k=t.length;
     if(k===1) return {cost:0,nodes:new Set([t[0]])};
     const F=1<<k, dp=[], par=[];
@@ -2461,7 +2462,7 @@ function makeCore(G, CARDS, CITIES){
       const pq=new PQ();
       for(let v=0;v<N;v++) if(row[v]<Infinity) pq.push([row[v],v]);
       while(pq.size){ const [c,u]=pq.pop(); if(c>row[u])continue;
-        for(const [v,s] of adj[u]){ const nc=c+w(u,v,s,owned); if(nc<row[v]){row[v]=nc;par[m][v]=['e',u];pq.push([nc,v]);} } }
+        for(const [v,sg] of adj[u]){ const nc=c+W(u,v,sg); if(nc<row[v]){row[v]=nc;par[m][v]=['e',u];pq.push([nc,v]);} } }
     }
     const full=F-1; let root=0;
     for(let v=1;v<N;v++) if(dp[full][v]<dp[full][root]) root=v;
@@ -2508,18 +2509,33 @@ function makeCore(G, CARDS, CITIES){
   }
 
   // cheapest connection between two cities, for entering track by hand
-  function connect(aKey,bKey,owned){
+  function connect(aKey,bKey,owned,fewestMoves){
     owned=owned||new Set();
+    const wt=fewestMoves ? (()=>1) : ((u,v,sg)=>w(u,v,sg,owned));
     const src=CITY[aKey], dst=CITY[bKey];
     if(src===undefined||dst===undefined) return null;
     const d=new Float64Array(N).fill(Infinity), prev=new Int32Array(N).fill(-1);
     d[src]=0; const pq=new PQ(); pq.push([0,src]);
     while(pq.size){ const [c,u]=pq.pop(); if(c>d[u])continue; if(u===dst)break;
-      for(const [v,sg] of adj[u]){ const nc=c+w(u,v,sg,owned); if(nc<d[v]){d[v]=nc;prev[v]=u;pq.push([nc,v]);} } }
+      for(const [v,sg] of adj[u]){ const nc=c+wt(u,v,sg); if(nc<d[v]){d[v]=nc;prev[v]=u;pq.push([nc,v]);} } }
     if(d[dst]===Infinity) return null;
     const edges=[]; let v=dst;
     while(prev[v]>=0){ edges.push(ekey(prev[v],v)); v=prev[v]; }
-    return {cost:d[dst],edges};
+    const fresh=edges.filter(e=>!owned.has(e));
+    return {cost:treeCost(new Set(edges),owned,src),moves:edges.length,edges,newSegments:fresh.length};
+  }
+
+  function treeCost(tedges,owned,root){
+    const nb={}; for(const e of tedges){ const [a,b]=e.split('_').map(Number);
+      (nb[a]=nb[a]||[]).push(b); (nb[b]=nb[b]||[]).push(a); }
+    const surch={}; for(const [u,v,sg] of G.edges) if(sg) surch[ekey(u,v)]=sg;
+    let tot=0; const seen=new Set([root]), q=[root];
+    while(q.length){ const u=q.shift();
+      for(const v of (nb[u]||[])) if(!seen.has(v)){ seen.add(v);
+        const e=ekey(u,v);
+        if(!owned.has(e)) tot += COST[v] + (surch[e]||0);
+        q.push(v); } }
+    return tot;
   }
 
   function plan(hand,loads,speed,owned,topn,circus,startKey,carrying,routes){
@@ -2568,8 +2584,11 @@ function makeCore(G, CARDS, CITIES){
       const tn=c.terms.map(k=>CITY[k]);
       const tn2=startKey?tn.concat([CITY[startKey]]):tn;
       const tre=steiner(tn2,owned); const cost=tre.cost, nodes=tre.nodes;
+      const fast=steiner(tn2,owned,()=>1);
       const stops=[]; c.combo.forEach((x,j)=>{ stops.push(CITY[c.srcs[j]]); stops.push(CITY[norm(x.d.city)]); });
       const mv=tourMoves(nodes,stops,owned,startKey?CITY[startKey]:null,tre.edges);
+      const fmv=tourMoves(fast.nodes,stops,owned,startKey?CITY[startKey]:null,fast.edges);
+      const fcost=treeCost(fast.edges,owned,tn2[0]);
       // cities this plan newly connects, and what they are worth
       const already=new Set();
       for(const e of owned){ const [a,b]=e.split('_').map(Number);
@@ -2583,13 +2602,16 @@ function makeCore(G, CARDS, CITIES){
         payout:c.combo.reduce((s,x)=>s+x.d.payout,0),
         legs:c.combo.map((x,j)=>({card:x.card,load:x.d.load,circus:!!x.d.circus,held:!!x.d.held,
           from:x.d.held?'aboard':(NAME[c.srcs[j]]||c.srcs[j]),to:x.d.city,pay:x.d.payout})),
-        nodes:[...nodes], edges:[...tre.edges]});
+        fastBuild:fcost, fastMoves:fmv, fastTurns:Math.max(1,Math.ceil(fmv/speed)),
+        nodes:[...nodes], edges:[...tre.edges],
+        fastNodes:[...fast.nodes], fastEdges:[...fast.edges]});
     }
     return out;   // caller sorts
   }
   function sortBy(res,mode){
     const r=res.slice();
     if(mode==='perTurn') r.sort((a,b)=>b.perTurn-a.perTurn || a.build-b.build);
+    else if(mode==='moves') r.sort((a,b)=>a.moves-b.moves || a.build-b.build);
     else if(mode==='reach') r.sort((a,b)=>(b.reach-b.build*2)-(a.reach-a.build*2) || a.build-b.build);
     else r.sort((a,b)=>a.build-b.build || a.moves-b.moves);
     return r;
@@ -2717,10 +2739,10 @@ function render(ms){
   out.innerHTML=res.map((r,i)=>`<div class="res">
       <div class="hd"><span class="cost">$${r.build}M</span>
         <span class="mv">${r.moves} moves · ${r.turns} turn${r.turns===1?'':'s'} · pays <span class="pay">$${r.payout}M</span></span></div>
-      <div><span class="tag">$${r.perTurn}M/turn</span><span class="tag">expansion ${r.reach}</span>${r.newCities.length?`<span class="tag">opens ${r.newCities.slice(0,4).join(', ')}${r.newCities.length>4?'…':''}</span>`:''}</div>
+      <div><span class="tag">$${r.perTurn}M/turn</span><span class="tag">expansion ${r.reach}</span>${r.fastMoves<r.moves?`<span class="tag">or $${r.fastBuild}M for ${r.fastMoves} moves (${r.fastTurns}t)</span>`:''}${r.newCities.length?`<span class="tag">opens ${r.newCities.slice(0,4).join(', ')}${r.newCities.length>4?'…':''}</span>`:''}</div>
       ${r.legs.map(l=>`<div class="leg">card <b>${l.card}</b> · <span class="${l.circus?'circus':''}">${l.load}${l.held?' (aboard)':''}</span>: ${l.from} &rarr; ${l.to} <span class="pay">$${l.pay}M</span></div>`).join('')}
       <div class="row" style="margin:10px 0 0"><button class="sm" data-i="${i}">Mark this track as built</button></div>
-    </div>`).join('')+`<div class="note">${res.length} options${ms?' · '+(ms/1000).toFixed(1)+'s':''} · ranked by ${({build:'cheapest build',perTurn:'profit per turn',reach:'expansion value'})[mode]}</div>`;
+    </div>`).join('')+`<div class="note">${res.length} options${ms?' · '+(ms/1000).toFixed(1)+'s':''} · ranked by ${({build:'cheapest build',moves:'fewest moves',perTurn:'profit per turn',reach:'expansion value'})[mode]}</div>`;
     out.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{
       const r=res[+b.dataset.i];
       undoStack.push(new Set(owned));
