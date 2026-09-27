@@ -98,6 +98,10 @@ main{padding:12px 16px}
 <div id="tinfo" class="note" style="padding:0 16px"></div>
 <main id="out"><div class="empty">Enter your three card numbers and tap Plan.</div></main>
 <script>
+window.onerror=function(m,src,line,col){
+  var o=document.getElementById('out');
+  if(o) o.innerHTML='<div class="empty" style="color:#ff8a8a">script error: '+m+'<br>line '+line+'</div>';
+};
 const G=__G__, CARDS=__C__, CITIES=__CI__;
 __CORE__
 const core=makeCore(G,CARDS,CITIES);
@@ -128,6 +132,7 @@ drawRoutes();
 function hand(){ return ['c1','c2','c3'].map(i=>document.getElementById(i).value.trim()).filter(Boolean); }
 function saveCarry(){ try{localStorage.setItem('eb_carry',JSON.stringify(carrying));}catch(e){} }
 function drawHold(){
+  carrying=carrying.filter(h=>CARDS[h.card]&&CARDS[h.card][h.idx]);
   const sel=document.getElementById('hold'); const opts=[];
   for(const c of hand()){ const ds=CARDS[c]||[];
     ds.forEach((d,i)=>opts.push(`<option value="${c}:${i}">card ${c} · ${d.load} &rarr; ${d.city}</option>`)); }
@@ -236,7 +241,7 @@ document.getElementById('undoturn').onclick=()=>{
 function trackLine(){ document.getElementById('track').textContent =
   owned.size ? owned.size+' segments of track already built (counted as free)' : 'no track built yet';
   drawMap(); }
-trackLine();
+try{ trackLine(); drawHold(); vicLine(); }catch(e){ console.error(e); }
 document.getElementById('clr').onclick=()=>{ owned=new Set(); saveTrack(); trackLine(); };
 document.getElementById('go').onclick=()=>{
   const h=hand();
