@@ -25,6 +25,15 @@ select{background:#0c0e13;border:1px solid var(--line);color:var(--ink);border-r
 .circus{color:#ffca57;font-weight:600}
 #map{width:100%;height:46vh;background:#0c0e13;border:1px solid var(--line);border-radius:12px;margin-bottom:12px;display:block}
 .tag{display:inline-block;font-size:12px;color:var(--dim);margin-right:8px}
+details{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:#151922}
+details>summary{list-style:none;cursor:pointer;padding:9px 12px;font-size:13px;color:var(--dim);
+  display:flex;justify-content:space-between;align-items:center;gap:10px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::after{content:'▾';color:var(--dim);font-size:12px}
+details[open]>summary::after{content:'▴'}
+details>summary b{color:var(--ink);font-weight:600}
+details .row{margin:0 12px 10px}
+details .row:first-of-type{margin-top:2px}
 .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .seg div{padding:8px 12px;font-size:14px;color:var(--dim);cursor:pointer;background:#0c0e13}
 .seg div.on{background:#2b3852;color:#fff}
@@ -48,6 +57,7 @@ main{padding:12px 16px}
   <input type="text" id="c2" inputmode="numeric" placeholder="2">
   <input type="text" id="c3" inputmode="numeric" placeholder="3">
 </div>
+<details id="dSetup"><summary><span id="sumSetup">train &amp; options</span></summary>
 <div class="row">
   <label>train</label>
   <div class="seg" id="spd"><div data-v="9">9 moves</div><div data-v="12">12 moves</div></div>
@@ -57,6 +67,8 @@ main{padding:12px 16px}
   <label>circus</label>
   <select id="k0"></select><select id="k1"></select>
 </div>
+</details>
+<details id="dGame"><summary><span id="sumGame">game state</span></summary>
 <div class="row">
   <label>cash</label><input type="text" id="cash" inputmode="numeric" placeholder="50">
   <label>turn</label><input type="text" id="turn" inputmode="numeric" placeholder="1">
@@ -68,7 +80,9 @@ main{padding:12px 16px}
   <button class="sm" id="logturn">End turn</button>
   <button class="sm" id="undoturn">Undo turn</button>
 </div>
+</details>
 <div id="vic" class="note"></div>
+<details id="dPlan"><summary><span id="sumPlan">planning options</span></summary>
 <div class="row">
   <label>routes</label>
   <div class="seg" id="rts"><div data-v="1">1</div><div data-v="2">2</div><div data-v="3">3</div></div>
@@ -84,6 +98,7 @@ main{padding:12px 16px}
 <div class="row">
   <label>start in</label><select id="start"></select>
 </div>
+</details>
 <div class="row">
   <button class="go" id="go">Plan</button>
   <button class="sm" id="clr">Clear track</button>
@@ -91,11 +106,12 @@ main{padding:12px 16px}
 <div id="track"></div>
 </header>
 <svg id="map" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"></svg>
-<div class="row" style="padding:0 16px">
-  <label>add track</label><select id="ta"></select><select id="tb"></select>
+<details id="dTrack" style="margin:0 16px 8px"><summary><span id="sumTrack">add track by hand</span></summary>
+<div class="row" style="padding:0 12px">
+  <label>from</label><select id="ta"></select><select id="tb"></select>
   <button class="sm" id="addcheap">Add cheapest</button><button class="sm" id="addshort">Add shortest</button><button class="sm" id="undo">Undo</button>
 </div>
-<div id="tinfo" class="note" style="padding:0 16px"></div>
+<div id="tinfo" class="note" style="padding:0 12px 10px"></div></details>
 <div id="mapdbg" class="note" style="padding:0 16px"></div>
 <main id="out"><div class="empty">Enter your three card numbers and tap Plan.</div></main>
 <script>
@@ -122,13 +138,13 @@ function saveTrain(){ try{ localStorage.setItem('eb_train',JSON.stringify({s:spe
 function seg(id,val,set){ const el=document.getElementById(id);
   [...el.children].forEach(d=>{ d.classList.toggle('on', +d.dataset.v===val());
     d.onclick=()=>{ set(+d.dataset.v); saveTrain(); seg(id,val,set); }; }); }
-seg('spd',()=>speed,v=>speed=v);
+seg('spd',()=>speed,v=>{speed=v; summaries();});
 seg('lds',()=>loads,v=>{loads=v; if(routes>loads){routes=loads;} drawRoutes();});
 function drawRoutes(){ const el=document.getElementById('rts');
   [...el.children].forEach(d=>{ const v=+d.dataset.v;
     d.style.display=v<=loads?'':'none';
     d.classList.toggle('on',v===routes);
-    d.onclick=()=>{ routes=v; try{localStorage.setItem('eb_routes',routes);}catch(e){} drawRoutes(); }; }); }
+    d.onclick=()=>{ routes=v; try{localStorage.setItem('eb_routes',routes);}catch(e){} drawRoutes(); summaries(); }; }); }
 drawRoutes();
 function hand(){ return ['c1','c2','c3'].map(i=>document.getElementById(i).value.trim()).filter(Boolean); }
 function saveCarry(){ try{localStorage.setItem('eb_carry',JSON.stringify(carrying));}catch(e){} }
@@ -146,11 +162,11 @@ function drawHold(){
 document.getElementById('addhold').onclick=()=>{ const v=document.getElementById('hold').value;
   if(!v) return; const [card,idx]=v.split(':');
   if(carrying.length>=loads) return;
-  carrying.push({card,idx:+idx}); saveCarry(); drawHold(); };
+  carrying.push({card,idx:+idx}); saveCarry(); drawHold(); summaries(); };
 ['c1','c2','c3'].forEach(i=>document.getElementById(i).addEventListener('input',drawHold));
 (function(){ const el=document.getElementById('mode');
   const paint=()=>[...el.children].forEach(d=>{ d.classList.toggle('on',d.dataset.v===mode);
-    d.onclick=()=>{ mode=d.dataset.v; try{localStorage.setItem('eb_mode',mode);}catch(e){} paint(); render(); }; });
+    d.onclick=()=>{ mode=d.dataset.v; try{localStorage.setItem('eb_mode',mode);}catch(e){} paint(); summaries(); render(); }; });
   paint(); })();
 const sorted=[...CITIES].sort((a,b)=>a.name.localeCompare(b.name));
 [0,1].forEach(i=>{ const el=document.getElementById('k'+i);
@@ -215,6 +231,18 @@ function drawMap(){
     owned=undoStack.pop(); saveTrack(); trackLine();
     document.getElementById('tinfo').textContent='undone'; }; })();
 
+['dSetup','dGame','dPlan','dTrack'].forEach(id=>{ const d=document.getElementById(id);
+  if(!d) return;
+  try{ d.open = localStorage.getItem('eb_'+id)==='1'; }catch(e){}
+  d.addEventListener('toggle',()=>{ try{localStorage.setItem('eb_'+id,d.open?'1':'0');}catch(e){} }); });
+function summaries(){
+  const set=(id,html)=>{ const e=document.getElementById(id); if(e) e.innerHTML=html; };
+  set('sumSetup',`train <b>${speed} moves / ${loads} loads</b> · circus ${core.NAME[circus[0]]||'?'}, ${core.NAME[circus[1]]||'?'}`);
+  set('sumGame',`<b>$${cash}M</b> · turn ${turn} · ${({1.2:'ahead',1:'even',0.7:'behind'})[pace]||''}`);
+  set('sumPlan',`<b>${routes} route${routes===1?'':'s'}</b> · by ${({delta:'turns saved',build:'cheapest',moves:'fewest moves',perTurn:'$/turn',reach:'expansion'})[mode]}`
+    +(startKey?` · from ${core.NAME[startKey]}`:'')+(carrying.length?` · ${carrying.length} aboard`:''));
+  set('sumTrack',`add track by hand · <b>${owned.size}</b> segments built`);
+}
 function saveGame(){ try{localStorage.setItem('eb_game',JSON.stringify({cash,turn,pace,log}));}catch(e){} }
 // income rate from the turns you've logged: median-ish, plus the best and worst
 // of the recent window so the estimate can be shown as a range rather than a
@@ -236,27 +264,27 @@ function vicLine(){
 ['cash','turn'].forEach(id=>{ const el=document.getElementById(id);
   el.value=(id==='cash'?cash:turn);
   el.addEventListener('input',()=>{ const v=parseInt(el.value||'0',10);
-    if(id==='cash') cash=v; else turn=v; saveGame(); vicLine(); }); });
+    if(id==='cash') cash=v; else turn=v; saveGame(); vicLine(); summaries(); }); });
 (function(){ const el=document.getElementById('pace');
   const paint=()=>[...el.children].forEach(d=>{ d.classList.toggle('on',+d.dataset.v===pace);
-    d.onclick=()=>{ pace=+d.dataset.v; saveGame(); paint(); vicLine(); if(LAST) render(); }; });
+    d.onclick=()=>{ pace=+d.dataset.v; saveGame(); paint(); vicLine(); summaries(); if(LAST) render(); }; });
   paint(); })();
 document.getElementById('logturn').onclick=()=>{
   const g=document.getElementById('gain');
   const v=parseInt(g.value||'0',10);
   log.push({turn,gain:v}); cash+=v; turn+=1; g.value='';
   document.getElementById('cash').value=cash; document.getElementById('turn').value=turn;
-  saveGame(); vicLine(); if(LAST) render(); };
+  saveGame(); vicLine(); summaries(); if(LAST) render(); };
 document.getElementById('undoturn').onclick=()=>{
   const last=log.pop(); if(!last) return;
   cash-=last.gain; turn-=1;
   document.getElementById('cash').value=cash; document.getElementById('turn').value=turn;
-  saveGame(); vicLine(); if(LAST) render(); };
+  saveGame(); vicLine(); summaries(); if(LAST) render(); };
 
 function trackLine(){ document.getElementById('track').textContent =
   owned.size ? owned.size+' segments of track already built (counted as free)' : 'no track built yet';
-  drawMap(); }
-try{ trackLine(); drawHold(); vicLine(); }catch(e){ console.error(e); }
+  drawMap(); summaries(); }
+try{ trackLine(); drawHold(); vicLine(); summaries(); }catch(e){ console.error(e); }
 document.getElementById('clr').onclick=()=>{ owned=new Set(); saveTrack(); trackLine(); };
 document.getElementById('go').onclick=()=>{
   const h=hand();
