@@ -58,6 +58,18 @@ main{padding:12px 16px}
   <select id="k0"></select><select id="k1"></select>
 </div>
 <div class="row">
+  <label>cash</label><input type="text" id="cash" inputmode="numeric" placeholder="50">
+  <label>turn</label><input type="text" id="turn" inputmode="numeric" placeholder="1">
+  <label>pace</label>
+  <div class="seg" id="pace"><div data-v="1.2">ahead</div><div data-v="1">even</div><div data-v="0.7">behind</div></div>
+</div>
+<div class="row">
+  <label>log</label><input type="text" id="gain" inputmode="numeric" placeholder="$M earned">
+  <button class="sm" id="logturn">End turn</button>
+  <button class="sm" id="undoturn">Undo turn</button>
+</div>
+<div id="vic" class="note"></div>
+<div class="row">
   <label>routes</label>
   <div class="seg" id="rts"><div data-v="1">1</div><div data-v="2">2</div><div data-v="3">3</div></div>
 </div>
@@ -67,7 +79,7 @@ main{padding:12px 16px}
 <div id="held" class="note"></div>
 <div class="row">
   <label>rank by</label>
-  <div class="seg" id="mode"><div data-v="build">cheapest</div><div data-v="moves">fewest moves</div><div data-v="perTurn">$/turn</div><div data-v="reach">expansion</div></div>
+  <div class="seg" id="mode"><div data-v="delta">turns saved</div><div data-v="build">cheapest</div><div data-v="moves">fewest moves</div><div data-v="perTurn">$/turn</div><div data-v="reach">expansion</div></div>
 </div>
 <div class="row">
   <label>start in</label><select id="start"></select>
@@ -91,13 +103,15 @@ __CORE__
 const core=makeCore(G,CARDS,CITIES);
 let owned=new Set(), speed=9, loads=2, circus=['tampa','tampa'], mode='build', startKey='';
 let routes=2, carrying=[], undoStack=[];
+let cash=50, turn=1, pace=1, log=[];   // log: [{turn,gain}]
 try{ const s=localStorage.getItem('eb_track'); if(s) owned=new Set(JSON.parse(s));
      const t=localStorage.getItem('eb_train'); if(t){const o=JSON.parse(t);speed=o.s;loads=o.l;}
      const k=localStorage.getItem('eb_circus'); if(k) circus=JSON.parse(k);
      const m=localStorage.getItem('eb_mode'); if(m) mode=m;
      const st=localStorage.getItem('eb_start'); if(st!==null) startKey=st;
      const rt=localStorage.getItem('eb_routes'); if(rt) routes=+rt;
-     const cy=localStorage.getItem('eb_carry'); if(cy) carrying=JSON.parse(cy); }catch(e){}
+     const cy=localStorage.getItem('eb_carry'); if(cy) carrying=JSON.parse(cy);
+     const gm=localStorage.getItem('eb_game'); if(gm){const o=JSON.parse(gm);cash=o.cash;turn=o.turn;pace=o.pace;log=o.log||[];} }catch(e){}
 function saveTrack(){ try{ localStorage.setItem('eb_track',JSON.stringify([...owned])); }catch(e){} }
 function saveTrain(){ try{ localStorage.setItem('eb_train',JSON.stringify({s:speed,l:loads})); }catch(e){} }
 function seg(id,val,set){ const el=document.getElementById(id);
@@ -176,10 +190,48 @@ function drawMap(){
     r.edges.forEach(e=>owned.add(e));
     undoStack.push(before);
     info.textContent=`added ${core.NAME[a]} &rarr; ${core.NAME[b]}: $${r.cost}M, ${r.edges.length} segments`;
-    saveTrack(); trackLine(); drawHold(); };
+    saveTrack(); trackLine(); drawHold(); vicLine(); };
   document.getElementById('undo').onclick=()=>{ if(!undoStack.length) return;
     owned=undoStack.pop(); saveTrack(); trackLine();
     document.getElementById('tinfo').textContent='undone'; }; })();
+
+function saveGame(){ try{localStorage.setItem('eb_game',JSON.stringify({cash,turn,pace,log}));}catch(e){} }
+// income rate from the turns you've logged: median-ish, plus the best and worst
+// of the recent window so the estimate can be shown as a range rather than a
+// number it hasn't earned.
+function rates(){
+  const w=log.slice(-6).map(x=>x.gain);
+  if(!w.length) return null;
+  const avg=w.reduce((a,b)=>a+b,0)/w.length;
+  return {avg, lo:Math.min(...w), hi:Math.max(...w)};
+}
+function turnsLeft(r){ if(!r||r<=0) return null; return (250-cash)/r*pace; }
+function vicLine(){
+  const el=document.getElementById('vic'); const r=rates();
+  if(!r){ el.textContent='log a few turns and a turns-to-win estimate appears here'; return; }
+  const a=turnsLeft(r.avg), lo=turnsLeft(r.hi), hi=turnsLeft(r.lo);
+  el.innerHTML=`$${cash}M · turn ${turn} · earning ~$${r.avg.toFixed(0)}M/turn `
+    +`&rarr; <b>${Math.max(0,Math.round(a))} turns to $250M</b> (range ${Math.max(0,Math.round(lo))}–${Math.max(0,Math.round(hi))})`;
+}
+['cash','turn'].forEach(id=>{ const el=document.getElementById(id);
+  el.value=(id==='cash'?cash:turn);
+  el.addEventListener('input',()=>{ const v=parseInt(el.value||'0',10);
+    if(id==='cash') cash=v; else turn=v; saveGame(); vicLine(); }); });
+(function(){ const el=document.getElementById('pace');
+  const paint=()=>[...el.children].forEach(d=>{ d.classList.toggle('on',+d.dataset.v===pace);
+    d.onclick=()=>{ pace=+d.dataset.v; saveGame(); paint(); vicLine(); if(LAST) render(); }; });
+  paint(); })();
+document.getElementById('logturn').onclick=()=>{
+  const g=document.getElementById('gain');
+  const v=parseInt(g.value||'0',10);
+  log.push({turn,gain:v}); cash+=v; turn+=1; g.value='';
+  document.getElementById('cash').value=cash; document.getElementById('turn').value=turn;
+  saveGame(); vicLine(); if(LAST) render(); };
+document.getElementById('undoturn').onclick=()=>{
+  const last=log.pop(); if(!last) return;
+  cash-=last.gain; turn-=1;
+  document.getElementById('cash').value=cash; document.getElementById('turn').value=turn;
+  saveGame(); vicLine(); if(LAST) render(); };
 
 function trackLine(){ document.getElementById('track').textContent =
   owned.size ? owned.size+' segments of track already built (counted as free)' : 'no track built yet';
@@ -203,15 +255,19 @@ let LAST=null;
 function render(ms){
   const out=document.getElementById('out');
   if(!LAST) return;
-  const res=core.sortBy(LAST,mode);
+  const r0=rates();
+  // fall back to what this hand itself implies if no turns are logged yet
+  const R=(r0&&r0.avg>0)?r0.avg:(LAST.length?Math.max(1,LAST[0].perTurn):10);
+  LAST.forEach(x=>{ x.deltaT = x.turns - (x.payout - x.build)/R; });
+  const res=(mode==='delta')?LAST.slice().sort((a,b)=>a.deltaT-b.deltaT):core.sortBy(LAST,mode);
   if(!res.length){ out.innerHTML='<div class="empty">No legal combination found.</div>'; return; }
   out.innerHTML=res.map((r,i)=>`<div class="res">
       <div class="hd"><span class="cost">$${r.build}M</span>
         <span class="mv">${r.moves} moves · ${r.turns} turn${r.turns===1?'':'s'} · pays <span class="pay">$${r.payout}M</span></span></div>
-      <div><span class="tag">$${r.perTurn}M/turn</span><span class="tag">expansion ${r.reach}</span>${r.fastMoves<r.moves?`<span class="tag">or $${r.fastBuild}M for ${r.fastMoves} moves (${r.fastTurns}t)</span>`:''}${r.newCities.length?`<span class="tag">opens ${r.newCities.slice(0,4).join(', ')}${r.newCities.length>4?'…':''}</span>`:''}</div>
+      <div><span class="tag" style="color:${r.deltaT<0?'#54c98a':'#d98a8a'}">${r.deltaT<0?'':'+'}${r.deltaT.toFixed(1)} turns to win</span><span class="tag">$${r.perTurn}M/turn</span><span class="tag">expansion ${r.reach}</span>${r.fastMoves<r.moves?`<span class="tag">or $${r.fastBuild}M for ${r.fastMoves} moves (${r.fastTurns}t)</span>`:''}${r.newCities.length?`<span class="tag">opens ${r.newCities.slice(0,4).join(', ')}${r.newCities.length>4?'…':''}</span>`:''}</div>
       ${r.legs.map(l=>`<div class="leg">card <b>${l.card}</b> · <span class="${l.circus?'circus':''}">${l.load}${l.held?' (aboard)':''}</span>: ${l.from} &rarr; ${l.to} <span class="pay">$${l.pay}M</span></div>`).join('')}
       <div class="row" style="margin:10px 0 0"><button class="sm" data-i="${i}">Mark this track as built</button></div>
-    </div>`).join('')+`<div class="note">${res.length} options${ms?' · '+(ms/1000).toFixed(1)+'s':''} · ranked by ${({build:'cheapest build',moves:'fewest moves',perTurn:'profit per turn',reach:'expansion value'})[mode]}</div>`;
+    </div>`).join('')+`<div class="note">${res.length} options${ms?' · '+(ms/1000).toFixed(1)+'s':''} · ranked by ${({delta:'turns saved',build:'cheapest build',moves:'fewest moves',perTurn:'profit per turn',reach:'expansion value'})[mode]}</div>`;
     out.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{
       const r=res[+b.dataset.i];
       undoStack.push(new Set(owned));
