@@ -76,7 +76,11 @@ main{padding:12px 16px}
   <div class="seg" id="pace"><div data-v="1.2">ahead</div><div data-v="1">even</div><div data-v="0.7">behind</div></div>
 </div>
 <div class="row">
-  <label>log</label><input type="text" id="gain" inputmode="numeric" placeholder="$M earned">
+  <label>delivered</label><select id="deliv"></select><button class="sm" id="adddeliv">+</button>
+</div>
+<div id="pending" class="note"></div>
+<div class="row">
+  <label>other $</label><input type="text" id="gain" inputmode="numeric" placeholder="0">
   <button class="sm" id="logturn">End turn</button>
   <button class="sm" id="undoturn">Undo turn</button>
 </div>
@@ -125,7 +129,7 @@ __CORE__
 const core=makeCore(G,CARDS,CITIES);
 let owned=new Set(), speed=9, loads=2, circus=['tampa','tampa'], mode='build', startKey='';
 let routes=2, carrying=[], undoStack=[];
-let cash=50, turn=1, pace=1, log=[];   // log: [{turn,gain}]
+let cash=50, turn=1, pace=1, log=[], pending=[];   // log: [{turn,gain,delivered}]
 try{ const s=localStorage.getItem('eb_track'); if(s) owned=new Set(JSON.parse(s));
      const t=localStorage.getItem('eb_train'); if(t){const o=JSON.parse(t);speed=o.s;loads=o.l;}
      const k=localStorage.getItem('eb_circus'); if(k) circus=JSON.parse(k);
@@ -133,7 +137,7 @@ try{ const s=localStorage.getItem('eb_track'); if(s) owned=new Set(JSON.parse(s)
      const st=localStorage.getItem('eb_start'); if(st!==null) startKey=st;
      const rt=localStorage.getItem('eb_routes'); if(rt) routes=+rt;
      const cy=localStorage.getItem('eb_carry'); if(cy) carrying=JSON.parse(cy);
-     const gm=localStorage.getItem('eb_game'); if(gm){const o=JSON.parse(gm);cash=o.cash;turn=o.turn;pace=o.pace;log=o.log||[];} }catch(e){}
+     const gm=localStorage.getItem('eb_game'); if(gm){const o=JSON.parse(gm);cash=o.cash;turn=o.turn;pace=o.pace;log=o.log||[];pending=o.pending||[];} }catch(e){}
 function saveTrack(){ try{ localStorage.setItem('eb_track',JSON.stringify([...owned])); }catch(e){} }
 function saveTrain(){ try{ localStorage.setItem('eb_train',JSON.stringify({s:speed,l:loads})); }catch(e){} }
 function seg(id,val,set){ const el=document.getElementById(id);
@@ -164,7 +168,7 @@ document.getElementById('addhold').onclick=()=>{ const v=document.getElementById
   if(!v) return; const [card,idx]=v.split(':');
   if(carrying.length>=loads) return;
   carrying.push({card,idx:+idx}); saveCarry(); drawHold(); summaries(); };
-['c1','c2','c3'].forEach(i=>document.getElementById(i).addEventListener('input',drawHold));
+['c1','c2','c3'].forEach(i=>document.getElementById(i).addEventListener('input',()=>{drawHold();drawDeliv();}));
 (function(){ const el=document.getElementById('mode');
   const paint=()=>[...el.children].forEach(d=>{ d.classList.toggle('on',d.dataset.v===mode);
     d.onclick=()=>{ mode=d.dataset.v; try{localStorage.setItem('eb_mode',mode);}catch(e){} paint(); summaries(); render(); }; });
@@ -246,7 +250,34 @@ function summaries(){
     +(startKey?` · from ${core.NAME[startKey]}`:'')+(carrying.length?` · ${carrying.length} aboard`:''));
   set('sumTrack',`add track by hand · <b>${owned.size}</b> segments built`);
 }
-function saveGame(){ try{localStorage.setItem('eb_game',JSON.stringify({cash,turn,pace,log}));}catch(e){} }
+function saveGame(){ try{localStorage.setItem('eb_game',JSON.stringify({cash,turn,pace,log,pending}));}catch(e){} }
+// every demand on the cards in hand, plus a circus run for any card that is a
+// multiple of 5, as things you can tick off as delivered
+function deliverables(){
+  const out=[];
+  for(const c of hand()){ const ds=CARDS[c]||[];
+    ds.forEach((d,i)=>out.push({card:c,idx:i,load:d.load,city:d.city,pay:d.payout}));
+    if(Number(c)%5===0 && ds.length){
+      let lo=ds[0]; for(const d of ds) if(d.payout<lo.payout) lo=d;
+      out.push({card:c,idx:-1,load:'circus',city:lo.city,pay:20});
+    } }
+  return out;
+}
+function drawDeliv(){
+  const sel=document.getElementById('deliv'); if(!sel) return;
+  const ds=deliverables();
+  sel.innerHTML = ds.length
+    ? ds.map((d,i)=>`<option value="${i}">card ${d.card} · ${d.load} &rarr; ${d.city} $${d.pay}M</option>`).join('')
+    : '<option value="">enter cards first</option>';
+  const p=document.getElementById('pending');
+  const tot=pending.reduce((s,x)=>s+x.pay,0);
+  p.innerHTML = pending.length
+    ? pending.map((x,i)=>`${x.load} &rarr; ${x.city} <b>$${x.pay}M</b> <a href="#" data-p="${i}">&times;</a>`).join(' · ')
+      +` &nbsp;= <b>$${tot}M</b> this turn`
+    : '';
+  document.querySelectorAll('#pending a').forEach(a=>a.onclick=e=>{
+    e.preventDefault(); pending.splice(+a.dataset.p,1); saveGame(); drawDeliv(); });
+}
 // income rate from the turns you've logged: median-ish, plus the best and worst
 // of the recent window so the estimate can be shown as a range rather than a
 // number it hasn't earned.
@@ -272,22 +303,43 @@ function vicLine(){
   const paint=()=>[...el.children].forEach(d=>{ d.classList.toggle('on',+d.dataset.v===pace);
     d.onclick=()=>{ pace=+d.dataset.v; saveGame(); paint(); vicLine(); summaries(); if(LAST) render(); }; });
   paint(); })();
+document.getElementById('adddeliv').onclick=()=>{
+  const sel=document.getElementById('deliv'); if(sel.value==='') return;
+  const d=deliverables()[+sel.value]; if(!d) return;
+  if(pending.some(p=>p.card===d.card)) return;   // one route per card
+  pending.push(d); saveGame(); drawDeliv(); };
 document.getElementById('logturn').onclick=()=>{
   const g=document.getElementById('gain');
-  const v=parseInt(g.value||'0',10);
-  log.push({turn,gain:v}); cash+=v; turn+=1; g.value='';
+  const other=parseInt(g.value||'0',10)||0;
+  const gain=pending.reduce((s,x)=>s+x.pay,0)+other;
+  const delivered=pending.slice();
+  log.push({turn,gain,delivered}); cash+=gain; turn+=1; g.value='';
+  // a delivered circus chip now lives in the city it was taken to
+  for(const d of delivered) if(d.idx===-1){
+    const k=core.norm(d.city);
+    let i=circus.indexOf('aboard'); if(i<0) i=circus.findIndex(x=>x!=='taken');
+    if(i>=0){ circus[i]=k; const el=document.getElementById('k'+i); if(el) el.value=k; }
+    try{localStorage.setItem('eb_circus',JSON.stringify(circus));}catch(e){}
+  }
+  // spent cards leave the hand, and anything aboard that just got dropped is gone
+  const spent=new Set(delivered.map(d=>d.card));
+  ['c1','c2','c3'].forEach(id=>{ const el=document.getElementById(id);
+    if(spent.has(el.value.trim())) el.value=''; });
+  carrying=carrying.filter(h=>!delivered.some(d=>d.card===h.card&&d.idx===h.idx));
+  pending=[]; saveCarry();
   document.getElementById('cash').value=cash; document.getElementById('turn').value=turn;
-  saveGame(); vicLine(); summaries(); if(LAST) render(); };
+  saveGame(); vicLine(); summaries(); drawHold(); drawDeliv(); LAST=null;
+  document.getElementById('out').innerHTML='<div class="empty">turn '+turn+' — enter your new card and tap Plan.</div>'; };
 document.getElementById('undoturn').onclick=()=>{
   const last=log.pop(); if(!last) return;
-  cash-=last.gain; turn-=1;
+  cash-=last.gain; turn-=1; pending=last.delivered||[];
   document.getElementById('cash').value=cash; document.getElementById('turn').value=turn;
   saveGame(); vicLine(); summaries(); if(LAST) render(); };
 
 function trackLine(){ document.getElementById('track').textContent =
   owned.size ? owned.size+' segments of track already built (counted as free)' : 'no track built yet';
   drawMap(); summaries(); }
-try{ trackLine(); drawHold(); vicLine(); summaries(); }catch(e){ console.error(e); }
+try{ trackLine(); drawHold(); vicLine(); summaries(); drawDeliv(); }catch(e){ console.error(e); }
 document.getElementById('resetall').onclick=()=>{
   if(!confirm('Reset track, game state, train and circus to defaults?')) return;
   try{ ['eb_track','eb_train','eb_circus','eb_mode','eb_start','eb_routes','eb_carry','eb_game',
