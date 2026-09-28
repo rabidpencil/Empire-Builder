@@ -102,6 +102,7 @@ main{padding:12px 16px}
 <div class="row">
   <button class="go" id="go">Plan</button>
   <button class="sm" id="clr">Clear track</button>
+  <button class="sm" id="resetall">Reset all</button>
 </div>
 <div id="track"></div>
 </header>
@@ -170,7 +171,8 @@ document.getElementById('addhold').onclick=()=>{ const v=document.getElementById
   paint(); })();
 const sorted=[...CITIES].sort((a,b)=>a.name.localeCompare(b.name));
 [0,1].forEach(i=>{ const el=document.getElementById('k'+i);
-  el.innerHTML=sorted.map(c=>`<option value="${c.key}">${c.name}</option>`).join('');
+  el.innerHTML='<option value="aboard">on my train</option><option value="taken">another player</option>'
+    +sorted.map(c=>`<option value="${c.key}">${c.name}</option>`).join('');
   el.value=circus[i]||'tampa';
   el.onchange=()=>{ circus[i]=el.value; try{localStorage.setItem('eb_circus',JSON.stringify(circus));}catch(e){} }; });
 (function(){ const el=document.getElementById('start');
@@ -237,7 +239,8 @@ function drawMap(){
   d.addEventListener('toggle',()=>{ try{localStorage.setItem('eb_'+id,d.open?'1':'0');}catch(e){} }); });
 function summaries(){
   const set=(id,html)=>{ const e=document.getElementById(id); if(e) e.innerHTML=html; };
-  set('sumSetup',`train <b>${speed} moves / ${loads} loads</b> · circus ${core.NAME[circus[0]]||'?'}, ${core.NAME[circus[1]]||'?'}`);
+  const cn=k=>k==='aboard'?'aboard':k==='taken'?'taken':(core.NAME[k]||'?');
+  set('sumSetup',`train <b>${speed} moves / ${loads} loads</b> · circus ${cn(circus[0])}, ${cn(circus[1])}`);
   set('sumGame',`<b>$${cash}M</b> · turn ${turn} · ${({1.2:'ahead',1:'even',0.7:'behind'})[pace]||''}`);
   set('sumPlan',`<b>${routes} route${routes===1?'':'s'}</b> · by ${({delta:'turns saved',build:'cheapest',moves:'fewest moves',perTurn:'$/turn',reach:'expansion'})[mode]}`
     +(startKey?` · from ${core.NAME[startKey]}`:'')+(carrying.length?` · ${carrying.length} aboard`:''));
@@ -285,6 +288,11 @@ function trackLine(){ document.getElementById('track').textContent =
   owned.size ? owned.size+' segments of track already built (counted as free)' : 'no track built yet';
   drawMap(); summaries(); }
 try{ trackLine(); drawHold(); vicLine(); summaries(); }catch(e){ console.error(e); }
+document.getElementById('resetall').onclick=()=>{
+  if(!confirm('Reset track, game state, train and circus to defaults?')) return;
+  try{ ['eb_track','eb_train','eb_circus','eb_mode','eb_start','eb_routes','eb_carry','eb_game',
+        'eb_dSetup','eb_dGame','eb_dPlan','eb_dTrack'].forEach(k=>localStorage.removeItem(k)); }catch(e){}
+  location.reload(); };
 document.getElementById('clr').onclick=()=>{ owned=new Set(); saveTrack(); trackLine(); };
 document.getElementById('go').onclick=()=>{
   const h=hand();

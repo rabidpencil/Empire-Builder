@@ -85,6 +85,7 @@ function makeCore(G, CARDS, CITIES){
       for(let i=0;i<q.length;i++){ const u=q[i];
         for(const [v] of adj[u]) if(!d.has(v)&&ok(ekey(u,v))){ d.set(v,d.get(u)+1); q.push(v); } }
       return d; };
+    for(const s of stops) if(s===undefined||s===null) throw new Error('bad stop node');
     const D=new Map(); for(const s of new Set(stops)) D.set(s,bfs(s));
     if(start!==undefined&&start!==null&&!D.has(start)) D.set(start,bfs(start));
     const n=stops.length; let best=Infinity;
@@ -143,7 +144,10 @@ function makeCore(G, CARDS, CITIES){
 
   function plan(hand,loads,speed,owned,topn,circus,startKey,carrying,routes){
     owned=owned||new Set();
+    // a chip can be parked in a city, riding on your train ('aboard'), or held
+    // by someone else ('taken') and therefore unusable
     circus=(circus&&circus.length?circus:['tampa','tampa']).map(norm);
+    const chips=circus.filter(x=>x!=='taken');
     const CD={}; for(const k in CITY) CD[k]=dijkstra(CITY[k],owned);
     carrying=carrying||[];
     const held=carrying.map(c=>({card:c.card,d:Object.assign({},CARDS[c.card][c.idx],{held:true})}));
@@ -155,7 +159,7 @@ function makeCore(G, CARDS, CITIES){
       for(let i=idx;i<hand.length;i++){
         for(const d of (CARDS[hand[i]]||[])) pick(i+1,chosen.concat([{card:hand[i],d}]));
         const c=circusOption(hand[i]);
-        if(c && chosen.filter(x=>x.d.circus).length < circus.length)
+        if(c && chosen.filter(x=>x.d.circus).length < chips.length)
           pick(i+1,chosen.concat([{card:hand[i],d:c}]));
       } };
     pick(0,[]);
@@ -163,14 +167,17 @@ function makeCore(G, CARDS, CITIES){
     for(const combo of combos){
       // a load already aboard needs no pickup: its leg starts wherever the train is
       const srcLists=combo.map(c=> c.d.held ? [startKey||norm(c.d.city)]
-                                : c.d.circus ? [...new Set(circus)] : (SRC[c.d.load.toLowerCase()]||[]));
+                                : c.d.circus ? [...new Set(chips)] : (SRC[c.d.load.toLowerCase()]||[]));
       const walk=(i,acc)=>{ if(i===srcLists.length){
           // don't take more chips out of a city than are parked there
           // a chip already sitting in the destination city isn't a delivery
-          for(let j=0;j<combo.length;j++) if(combo[j].d.circus && acc[j]===norm(combo[j].d.city)) return;
+          for(let j=0;j<combo.length;j++)
+            if(combo[j].d.circus && acc[j]!=='aboard' && acc[j]===norm(combo[j].d.city)) return;
           const need={}; combo.forEach((c,j)=>{ if(c.d.circus) need[acc[j]]=(need[acc[j]]||0)+1; });
-          for(const k in need){ const have=circus.filter(x=>x===k).length; if(need[k]>have) return; }
-          const terms=[]; combo.forEach((c,j)=>{ if(!c.d.held) terms.push(acc[j]); terms.push(norm(c.d.city)); });
+          for(const k in need){ const have=chips.filter(x=>x===k).length; if(need[k]>have) return; }
+          const terms=[]; combo.forEach((c,j)=>{
+            if(!c.d.held && acc[j]!=='aboard') terms.push(acc[j]);
+            terms.push(norm(c.d.city)); });
           const uniq=[...new Set(terms)];
           let bound=0; const inn=new Set([uniq[0]]);
           while(inn.size<uniq.length){ let bd=Infinity,bn=null;
@@ -188,7 +195,9 @@ function makeCore(G, CARDS, CITIES){
       const tn2=startKey?tn.concat([CITY[startKey]]):tn;
       const tre=steiner(tn2,owned); const cost=tre.cost, nodes=tre.nodes;
       const fast=steiner(tn2,owned,()=>1);
-      const stops=[]; c.combo.forEach((x,j)=>{ stops.push(CITY[c.srcs[j]]); stops.push(CITY[norm(x.d.city)]); });
+      const stops=[]; c.combo.forEach((x,j)=>{
+        if(!x.d.held && c.srcs[j]!=='aboard') stops.push(CITY[c.srcs[j]]);
+        stops.push(CITY[norm(x.d.city)]); });
       const mv=tourMoves(nodes,stops,owned,startKey?CITY[startKey]:null,tre.edges);
       const fmv=tourMoves(fast.nodes,stops,owned,startKey?CITY[startKey]:null,fast.edges);
       const fcost=treeCost(fast.edges,owned,tn2[0]);
@@ -204,7 +213,8 @@ function makeCore(G, CARDS, CITIES){
         perTurn:Math.round(c.combo.reduce((s,x)=>s+x.d.payout,0)/turns),
         payout:c.combo.reduce((s,x)=>s+x.d.payout,0),
         legs:c.combo.map((x,j)=>({card:x.card,load:x.d.load,circus:!!x.d.circus,held:!!x.d.held,
-          from:x.d.held?'aboard':(NAME[c.srcs[j]]||c.srcs[j]),to:x.d.city,pay:x.d.payout})),
+          from:(x.d.held||c.srcs[j]==='aboard')?'aboard':(NAME[c.srcs[j]]||c.srcs[j]),
+          to:x.d.city,pay:x.d.payout})),
         fastBuild:fcost, fastMoves:fmv, fastTurns:Math.max(1,Math.ceil(fmv/speed)),
         nodes:[...nodes], edges:[...tre.edges],
         fastNodes:[...fast.nodes], fastEdges:[...fast.edges]});
